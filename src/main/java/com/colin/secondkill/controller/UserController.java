@@ -121,7 +121,7 @@ public class UserController {
         String prefix = user.getId() + "-" +ttl;
         String shortToken = prefix + "-" + md5.digestHex16(prefix);
         Cookie shortCookie = new Cookie("shortToken", shortToken);
-        shortCookie.setMaxAge(20 * 60 * 1000);
+        shortCookie.setMaxAge(20 * 60);
         response.addCookie(shortCookie);
 
         //生成长token，生成后作为永不过期的cookie发到客户端，并且同时存到redis中，设置过期时间为30天
@@ -131,10 +131,10 @@ public class UserController {
         String longToken = longCookieId + "-" + signature;
 
         Cookie longCookie = new Cookie("longToken", longToken);
-        longCookie.setMaxAge(-1);
+        longCookie.setMaxAge(365 * 24 * 60 * 60);
         response.addCookie(longCookie);
         Jedis resource = jedisPool.getResource();
-        resource.setex(longCookieId, 30 * 24 * 60 * 60, JSONObject.toJSONString(user));
+        resource.setex(longCookieId, 365 * 24 * 60 * 60, JSONObject.toJSONString(user));
         resource.close();
 
         session.setAttribute("loginUser", user);
