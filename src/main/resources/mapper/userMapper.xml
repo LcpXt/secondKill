@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.colin.secondkill.mapper.UserMapper">
+    <insert id="insertUser">
+        INSERT INTO t_user(id, username, password, email, register_time, update_time, last_login_time, user_type, age, sex, expiration_date, head_img, phone_number) VALUES
+        (NULL, #{username}, #{password}, #{email}, #{registerTime}, #{updateTime}, #{lastLoginTime}, #{userType}, #{age}, #{sex}, #{expirationDate}, #{headImg}, #{phoneNumber})
+    </insert>
+    <update id="updatePasswordByEmail">
+        UPDATE t_user SET password = #{param2} WHERE email = #{param1}
+    </update>
+    <update id="updateLastLoginTime">
+        UPDATE t_user SET last_login_time = #{param1} WHERE username = #{param2}
+    </update>
+    <update id="updateHeadImgById">
+        UPDATE t_user SET head_img = #{param2} WHERE id = #{param1}
+    </update>
+    <update id="updateUserById">
+        UPDATE t_user
+        SET username = #{username}, age = #{age}, sex = #{sex}, description = #{description}, update_time = #{updateTime}
+        <if test="password != null">
+            , password = #{password}
+        </if>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="selectIdByUsername" resultType="java.lang.Integer">
+        SELECT id FROM t_user WHERE username = #{param}
+    </select>
+    <select id="selectUserByUsernameAndPassword" resultType="com.colin.secondkill.bean.User">
+        SELECT * FROM t_user WHERE username = #{param1} AND password = #{param2}
+    </select>
+    <select id="selectUserById" resultType="com.colin.secondkill.bean.User">
+        SELECT * FROM t_user WHERE id = #{param}
+    </select>
+</mapper>

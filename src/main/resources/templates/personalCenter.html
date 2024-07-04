@@ -1,0 +1,612 @@
+<!doctype html>
+<html lang="en" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="msapplication-TileColor" content="#0061da">
+    <meta name="theme-color" content="#1643a3">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+
+    <!-- Title -->
+    <title>adminor – Clean & Modern Responsive Bootstrap 4 admin dashboard HTML5 Template.</title>
+    <link rel="stylesheet" th:href="@{/assets/fonts/fonts/font-awesome.min.css}">
+
+    <!-- Font Family -->
+    <link th:href="@{https://fonts.googleapis.com/css?family=Lato:300,400,700,900}" rel="stylesheet">
+
+    <!-- Sidemenu Css -->
+    <link th:href="@{/assets/plugins/fullside-menu/css/style.css}" rel="stylesheet">
+    <link th:href="@{/assets/plugins/fullside-menu/waves.min.css}" rel="stylesheet">
+
+    <!-- Dashboard Css -->
+    <link th:href="@{/assets/css/dashboard.css}" rel="stylesheet">
+
+    <!-- c3.js Charts Plugin -->
+    <link th:href="@{/assets/plugins/charts-c3/c3-chart.css}" rel="stylesheet">
+
+    <!-- Custom scroll bar css-->
+    <link th:href="@{/assets/plugins/scroll-bar/jquery.mCustomScrollbar.css}" rel="stylesheet">
+
+    <!---Font icons-->
+    <link th:href="@{/assets/css/icons.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/assets/plugins/sweet-alert/sweetalert.css}">
+    <script th:src="@{/assets/plugins/sweet-alert/sweetalert.min.js}"></script>
+    <!-- Dashboard js -->
+    <script th:src="@{/assets/js/vendors/jquery-3.2.1.min.js}"></script>
+    <script th:src="@{/assets/js/vendors/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/assets/js/vendors/jquery.sparkline.min.js}"></script>
+    <script th:src="@{/assets/js/vendors/selectize.min.js}"></script>
+    <script th:src="@{/assets/js/vendors/selectize.min.js}"></script>
+    <script th:src="@{/assets/js/vendors/circle-progress.min.js}"></script>
+    <script th:src="@{/assets/plugins/rating/jquery.rating-stars.js}"></script>
+
+    <!-- Fullside-menu Js-->
+    <script th:src="@{/assets/plugins/fullside-menu/jquery.slimscroll.min.js}"></script>
+    <script th:src="@{/assets/plugins/fullside-menu/waves.min.js}"></script>
+
+    <!-- Custom scroll bar Js-->
+    <script th:src="@{/assets/plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js}"></script>
+
+    <!-- Custom Js-->
+    <script th:src="@{/assets/js/custom.js}"></script>
+    <script th:src="@{/assets/js/axios.js}"></script>
+    <script th:src="@{/assets/js/md5.js}"></script>
+
+    <!--dropzone的js和css文件 用于文件上传-->
+    <link th:href="@{/assets/plugins/dropzone/dropzone.css}" rel="stylesheet">
+    <script th:src="@{/assets/plugins/dropzone/dropzone.js}"></script>
+
+    <script th:src="@{/assets/js/spark-md5.js}"></script>
+
+</head>
+<body class="">
+<div id="global-loader"></div>
+<div class="page">
+    <div class="page-main">
+        <div class="app-header1 header py-1 d-flex">
+            <div class="container-fluid">
+                <div class="d-flex">
+                    <a class="header-brand" href="index-1.html">
+                        <img src="assets\images\brand\logo.png" class="header-brand-img" alt="adminor logo">
+                    </a>
+                    <div class="menu-toggle-button">
+                        <a class="nav-link wave-effect" href="#" id="sidebarCollapse">
+                            <span class="fa fa-bars"></span>
+                        </a>
+                    </div>
+                    <div class="d-flex order-lg-2 ml-auto header-right-icons header-search-icon">
+                        <div class="p-2">
+                            <form class="input-icon ">
+                                <div class="input-icon-addon">
+                                    <i class="fe fe-search"></i>
+                                </div>
+                                <input type="search" class="form-control header-search"
+                                       placeholder="Search&hellip;" tabindex="1">
+                            </form>
+                        </div>
+
+                        <div class="dropdown d-none d-md-flex">
+                            <a class="nav-link icon full-screen-link nav-link-bg">
+                                <i class="fa fa-expand" id="fullscreen-button"></i>
+                            </a>
+                        </div>
+
+                        <div class="dropdown d-none d-md-flex">
+                            <a class="nav-link icon" data-toggle="dropdown">
+                                <i class="fa fa-bell-o"></i>
+                                <span class="nav-unread bg-warning"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                <a href="#" class="dropdown-item d-flex pb-3">
+                                    <div class="notifyimg">
+                                        <i class="fa fa-thumbs-o-up"></i>
+                                    </div>
+                                    <div>
+                                        <strong>Someone likes our posts.</strong>
+                                        <div class="small text-muted">3 hours ago</div>
+                                    </div>
+                                </a>
+                                <a href="#" class="dropdown-item d-flex pb-3">
+                                    <div class="notifyimg">
+                                        <i class="fa fa-commenting-o"></i>
+                                    </div>
+                                    <div>
+                                        <strong> 3 New Comments</strong>
+                                        <div class="small text-muted">5 hour ago</div>
+                                    </div>
+                                </a>
+                                <a href="#" class="dropdown-item d-flex pb-3">
+                                    <div class="notifyimg">
+                                        <i class="fa fa-cogs"></i>
+                                    </div>
+                                    <div>
+                                        <strong> Server Rebooted.</strong>
+                                        <div class="small text-muted">45 mintues ago</div>
+                                    </div>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a href="#" class="dropdown-item text-center">View all Notification</a>
+                            </div>
+                        </div>
+                        <div class="dropdown d-none d-md-flex">
+                            <a class="nav-link icon text-center" data-toggle="dropdown">
+                                <i class="icon icon-speech"></i>
+                                <span class=" nav-unread badge badge-info badge-pill">2</span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                <a href="#" class="dropdown-item text-center">2 New Messages</a>
+                                <div class="dropdown-divider"></div>
+                                <a href="#" class="dropdown-item d-flex pb-3">
+                                            <span class="avatar brround mr-3 align-self-center cover-image"
+                                                  data-image-src="assets/images/faces/male/41.jpg"></span>
+                                    <div>
+                                        <strong>Madeleine</strong> Hey! there I' am available....
+                                        <div class="small text-muted">3 hours ago</div>
+                                    </div>
+                                </a>
+                                <a href="#" class="dropdown-item d-flex pb-3">
+                                            <span class="avatar brround mr-3 align-self-center cover-image"
+                                                  data-image-src="assets/images/faces/female/1.jpg"></span>
+                                    <div>
+                                        <strong>Anthony</strong> New product Launching...
+                                        <div class="small text-muted">5 hour ago</div>
+                                    </div>
+                                </a>
+                                <a href="#" class="dropdown-item d-flex pb-3">
+                                            <span class="avatar brround mr-3 align-self-center cover-image"
+                                                  data-image-src="assets/images/faces/female/18.jpg"></span>
+                                    <div>
+                                        <strong>Olivia</strong> New Schedule Realease......
+                                        <div class="small text-muted">45 mintues ago</div>
+                                    </div>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a href="#" class="dropdown-item text-center">See all Messages</a>
+                            </div>
+                        </div>
+                        <div class="dropdown d-none d-md-flex ">
+                            <a class="nav-link icon " data-toggle="dropdown">
+                                <i class="fe fe-grid floating"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                <ul class="drop-icon-wrap p-1">
+                                    <li>
+                                        <a href="email.html" class="drop-icon-item">
+                                            <i class="fe fe-mail text-dark"></i>
+                                            <span class="block"> E-mail</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="calendar2.html" class="drop-icon-item">
+                                            <i class="fe fe-calendar text-dark"></i>
+                                            <span class="block">calendar</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="maps.html" class="drop-icon-item">
+                                            <i class="fe fe-map-pin text-dark"></i>
+                                            <span class="block">map</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="cart.html" class="drop-icon-item">
+                                            <i class="fe fe-shopping-cart text-dark"></i>
+                                            <span class="block">Cart</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="chat.html" class="drop-icon-item">
+                                            <i class="fe fe-message-square text-dark"></i>
+                                            <span class="block">chat</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="profile.html" class="drop-icon-item">
+                                            <i class="fe fe-phone-outgoing text-dark"></i>
+                                            <span class="block">contact</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="dropdown-divider"></div>
+                                <a href="#" class="dropdown-item text-center">View all</a>
+                            </div>
+                        </div>
+                        <div class="dropdown text-center selector">
+                            <a href="#" class="nav-link leading-none" data-toggle="dropdown">
+                                        <span class="avatar avatar-sm brround"
+                                              th:style="'background-image: url(' + ${session.loginUser.headImg} + ')'"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow ">
+                                <div class="text-center">
+                                    <a href="#" class="dropdown-item text-center font-weight-sembold user"
+                                       data-toggle="dropdown" th:text="${session.loginUser.username}"></a>
+                                    <span class="text-center user-semi-title text-dark"
+                                          th:text="${session.loginUser.email}"></span>
+                                    <div class="dropdown-divider"></div>
+                                </div>
+                                <a class="dropdown-item" href="#">
+                                    <i class="dropdown-icon mdi mdi-account-outline"></i> Profile
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="dropdown-icon  mdi mdi-settings"></i> Settings
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <span class="float-right"><span class="badge badge-primary">6</span></span>
+                                    <i class="dropdown-icon mdi  mdi-message-outline"></i> Inbox
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="dropdown-icon mdi mdi-comment-check-outline"></i> Message
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">
+                                    <i class="dropdown-icon mdi mdi-compass-outline"></i> Need help?
+                                </a>
+                                <a class="dropdown-item" href="/user/logout">
+                                    <i class="dropdown-icon mdi  mdi-logout-variant"></i> 退出登录
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="wrapper">
+            <!-- Sidebar Holder -->
+            <nav id="sidebar" class="nav-sidebar">
+                <ul class="list-unstyled components" id="accordion">
+                    <div class="user-profile">
+                        <div class="dropdown user-pro-body">
+                            <div>
+                                <!-- <img th:src="@{${session.loginUser.headImg}}" alt="user-img" class="img-circle">-->
+                                <span class="avatar avatar-sm brround"
+                                      th:style="'background-image: url(' + ${session.loginUser.headImg} + ')'"></span>
+                            </div>
+                            <div class="mb-2"><a href="#" class="" data-toggle="" aria-haspopup="true"
+                                                 aria-expanded="false"> <span class="font-weight-semibold"
+                                                                              th:text="${session.loginUser.username}"></span>
+                            </a>
+                                <br><span class="text-gray" th:text="${session.loginUser.email}"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <li class="">
+                        <a href="#homeSubmenu" class="wave-effect">
+                            <i class="fa fa-desktop mr-2"></i> 个人信息
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#Apps" class="wave-effect">
+                            <i class="fa fa-snowflake-o mr-2"></i> 个人空间
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#pageSubmenu" class="wave-effect">
+                            <i class="fa fa-area-chart mr-2"></i> 成为会员
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#Uielements" class="wave-effect">
+                            <i class="mdi mdi-buffer mr-2"></i> 观看历史
+                        </a>
+
+                    </li>
+                    <li class="">
+                        <a href="#Uidesign" class="wave-effect">
+                            <i class="fa fa-tachometer mr-2"></i> 我的收藏
+                        </a>
+
+                    </li>
+                    <li>
+                        <a href="widgets.html" class="wave-effect">
+                            <i class="fa fa-cubes mr-2"></i> 积分管理
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#pages" class="wave-effect">
+                            <i class="mdi mdi-file mr-2"></i> 成为创作者
+                        </a>
+
+                    </li>
+                    <li class="">
+                        <a href="#Forms" class="wave-effect">
+                            <i class="mdi mdi-arrange-send-backward mr-2"></i> 视频投稿
+                        </a>
+
+                    </li>
+                    <li class="">
+                        <a href="#Submenu1" class="wave-effect">
+                            <i class="fa fa-calendar mr-2"></i> 稿件管理
+                        </a>
+
+                    </li>
+                    <li class="">
+                        <a href="#Icons" class="wave-effect">
+                            <i class="fa fa-bandcamp mr-2"></i> 创作中心
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="content-area">
+                <div class="page-header">
+                    <h4 class="page-title">个人信息</h4>
+                </div>
+                <div class="row row-deck">
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">个人信息</h3>
+                            </div>
+                            <div class="card-body p-4 bg-primary text-white">
+                                <form>
+                                    <div class="row text-center">
+                                        <div class="col-12">
+                                                    <span class="avatar avatar-sm brround"
+                                                          th:style="'background-image: url(' + ${session.loginUser.headImg} + ')'"></span>
+                                        </div>
+                                        <div class="col-12">
+                                            <h4 class="mb-1 mt-2 " th:text="${session.loginUser.username}"></h4>
+                                            <p class="mb-0" th:text="${session.loginUser.email}"></p>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- 个人信息修改的card-->
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label class="form-label">用户名</label>
+                                    <input type="text" class="form-control" name="example-text-input"
+                                           th:value="${session.loginUser.username}" id="username">
+                                    <input type="hidden" th:value="${session.loginUser.username}" id="usernameOriginal">
+                                    <input type="hidden" th:value="${session.loginUser.id}" id="id">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">密码</label>
+                                    <input type="password" class="form-control" name="password" id="password">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">确认密码</label>
+                                    <input type="password" class="form-control" name="password" id="passwordChecked">
+                                </div>
+                                <!--
+                                    下拉框是通过 option标签上的selected属性 来标注当前选项是默认被选中的
+                                    session.loginUser.age
+                                -->
+                                <div class="form-group">
+                                    <label class="form-label">年龄</label>
+                                    <select name="age" class="form-control custom-select" id="age">
+                                        <option th:each="age:${ageList}" th:text="${age}" th:value="${age}" th:selected="${age == session.loginUser.age}"></option>
+                                    </select>
+                                    <input type="hidden" th:value="${session.loginUser.age}" id="ageOriginal">
+                                </div>
+                                <div class="form-group">
+                                    <!--单选框是根据 input type=radio标签上是否存在 checked属性 决定是否被选中-->
+                                    <label class="custom-control custom-radio">
+                                        <input type="radio" class="custom-control-input" name="sex"
+                                               value="男" th:checked="${session.loginUser.sex == '男'}">
+                                        <span class="custom-control-label">男</span>
+                                    </label>
+                                    <label class="custom-control custom-radio">
+                                        <input type="radio" class="custom-control-input" name="sex"
+                                               value="女" th:checked="${session.loginUser.sex == '女'}">
+                                        <span class="custom-control-label">女</span>
+                                    </label>
+                                    <input type="hidden" th:value="${session.loginUser.sex}" id="sexOriginal">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">个性签名</label>
+                                    <textarea class="form-control" rows="2" th:text="${session.loginUser.description}" id="description"></textarea>
+                                    <input type="hidden" th:value="${session.loginUser.description}" id="descriptionOriginal">
+                                </div>
+
+                                <div class="form-footer">
+                                    <button class="btn btn-secondary btn-block" id="updateBtn">修改</button>
+                                </div>
+                                </form>
+
+                                <h6 class="card-title font-weight-bold"></h6>
+                                <p class="card-text">
+                                <div class="media-list">
+                                    <!-- media -->
+                                    <div class="media">
+                                        <div class="mediaicon bg-secondary">
+                                            <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="media-body ml-5">
+                                            <h6 class="mediafont text-dark mb-0">绑定邮箱</h6>
+                                            <a class="d-block" href="#" th:text="${session.loginUser.email}"></a>
+                                        </div>
+                                        <!-- media-body -->
+                                    </div>
+                                    <!-- media -->
+                                    <div class="media">
+                                        <div class="mediaicon bg-info">
+                                            <i class="fa fa-twitter" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="media-body ml-5">
+                                            <h6 class="mediafont text-dark mb-0">联系电话</h6><a class="d-block"
+                                                                                                 href="#" th:text="${session.loginUser.phoneNumber}"></a>
+                                        </div>
+                                        <!-- media-body -->
+                                    </div>
+                                    <!-- media -->
+                                </div>
+                            </div>
+                        </div>
+                        <!--                                <div class="card">-->
+                        <!--                                    <div class="card-body">-->
+                        <!--                                        -->
+
+                        <!--                                    </div>-->
+                        <!--                                </div>-->
+                    </div>
+
+                    <!--修改头像的表单-->
+                    <div class="col-6">
+                        <form enctype="multipart/form-data" class="dropzone card" id="myHeadImgDropzone">
+                            <div class="card-header">
+                                <h3 class="card-title">修改头像</h3>
+                            </div>
+                            <input type="file" name="headImg" class="btn btn-secondary btn-block"/>
+                        </form>
+                        <!-- 头像上传 dropzone 配置-->
+                        <script>
+                            let md5File = null;
+                            // "myHeadImgDropzone" 是那个 HTML 元素的 ID
+                            // 这里的id不是驼峰格式，是以`-`为分隔，如 id="my-awesome-dropzone"
+                            // {
+                            //     属性名称: 属性值,
+                            //     属性名称: 属性值,
+                            //     属性名称: 属性值,
+                            //     属性名称: 属性值
+                            // }
+                            // 上传前 先行发送一次xhr请求 将文件的md5值计算出来 并发送给服务端 让服务端检查是否存在 如果存在那么不进行后续的上传 直接返回这个文件的相关信息
+                            // 如果服务端不存在 我们进行发送 同时将计算出来的md5值 随着文件一起给到服务端 让服务端除了存储文件外 还要记录这个文件的md5值
+                            Dropzone.options.myHeadImgDropzone = {
+                                method: 'POST', // 使用的请求方法是
+                                url: '/user/headImgUpload', // 文件上传的路径是
+                                paramName: "headImg", // 这个要和input type=file标签的name属性一致
+                                maxFilesize: 100, // 最大文件大小 100MB 可能是高清图
+                                success: function (file, response) { // 上传成功的回调函数
+                                    location.href = '/toPersonalCenter'
+                                },
+                                // file代表当前要上传的文件 done代表一个函数名称 如果我们调用done() 就代表执行上传 如果我们调用done('tips') 拒绝上传并且给用户一个提示
+                                accept: function (file, done) {
+                                    let fileReader = new FileReader();
+                                    // 读文件是 异步的读取
+                                    fileReader.readAsBinaryString(file);
+                                    // 该事件是 fileReader读取文件 完成自动触发的事件
+                                    fileReader.onload = function (e) {
+                                        // 获取文件内容的 字节数组的字符串内容
+                                        let fileContent = e.target.result;
+                                        // 对文件内容进行MD5
+                                        let hashBinary = SparkMD5.hashBinary(fileContent);
+                                        // 提取成一个共有变量 方便我们后续发送文件时 携带MD5值
+                                        md5File = hashBinary;
+                                        // 校验服务端是否缓存有这个MD5值
+                                        axios({
+                                            method: 'POST',
+                                            url: '/file/checkFileMD5/' + hashBinary
+                                        }).then(function (response) {
+                                            console.log(response.data);
+                                            if (response.data.status === 'FILE_EXISTS') {
+                                                done(response.data.message);
+                                                location.href = '/toPersonalCenter'
+                                            } else if (response.data.status === 'FILE_NOT_EXISTS') {
+                                                done();
+                                            }
+                                        })
+                                    }
+                                },
+                                // 文件真正要开始上传时 触发的回调方法 可以通过formData对象动态添加表单参数
+                                // file 就是当前即将要上传的文件
+                                // xhr 就是使用的异步对象即 XmlHttpRequest
+                                sending: function (file, xhr, formData) {
+                                    formData.append('md5', md5File)
+                                },
+                                acceptedFiles: 'image/*' // 允许上传的文件类型 因为是头像所以这里只能是img
+                                // 如果你还想允许别的类型文件 acceptedFiles: 'image/*', 'application/pdf'
+                            };
+                        </script>
+                        <!--个人信息修改的异步请求-->
+                        <script>
+                            let username = document.getElementById('username');
+                            let usernameOriginal = document.getElementById('usernameOriginal');
+                            let ageOption = document.getElementsByTagName('option');
+                            let ageOriginal = document.getElementById('ageOriginal');
+                            let sexArr = document.getElementsByName('sex')
+                            let sexOriginal = document.getElementById('sexOriginal');
+                            let description = document.getElementById('description');
+                            let descriptionOriginal = document.getElementById('descriptionOriginal');
+                            let password = document.getElementById('password');
+                            let passwordChecked = document.getElementById('passwordChecked');
+
+                            let sex;
+                            let age;
+                            let updateBtn = document.getElementById('updateBtn');
+                            updateBtn.onclick = function () {
+                                for (const sexRadio of sexArr) {
+                                    if (sexRadio.checked) {
+                                        sex = sexRadio.value;
+                                    }
+                                }
+
+                                for (const option of ageOption) {
+                                    if (option.selected) {
+                                        age = option.value;
+                                    }
+                                }
+
+                                if (username.value == usernameOriginal.value && age == ageOriginal.value && sex == sexOriginal.value && description.value == descriptionOriginal.value && password.value == '') {
+                                    swal('当前无修改', '', 'warning');
+                                    return;
+                                }
+
+                                if (password.value != passwordChecked.value) {
+                                    swal('两次输入密码不一致', '', 'error');
+                                    return;
+                                }
+
+                                let finalPassword = null;
+                                if (password.value != '') {
+                                    finalPassword = b64_md5(password.value)
+                                }
+
+                                let user = {
+                                    id: document.getElementById('id').value,
+                                    username: username.value,
+                                    password: finalPassword,
+                                    age: age,
+                                    sex: sex,
+                                    description: description.value
+                                };
+
+                                axios({
+                                    method: 'POST',
+                                    url: '/user/updatePersonalInfo',
+                                    data: user
+                                }).then(function (response) {
+                                    if (response.data.status === 'SUCCESS') {
+                                        swal(response.data.message, '', 'success');
+                                    } else {
+                                        swal(response.data.message, '', 'error');
+                                    }
+                                    location.href = '/toPersonalCenter';
+                                })
+                            }
+
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--footer-->
+    <footer class="footer">
+        <div class="container">
+            <div class="row align-items-center flex-row-reverse">
+                <div class="col-lg-12 col-sm-12 mt-3 mt-lg-0 text-center">
+                    Copyright © 2018 <a href="http://www.bootstrapmb.com/" title="bootstrapmb">adminor</a>.
+                    Designed by <a href="#">Spruko</a> All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- End Footer-->
+</div>
+
+<!-- Back to top -->
+<a href="#top" id="back-to-top" style="display: inline;"><i class="fa fa-angle-up"></i></a>
+
+</body>
+</html>
+
+

@@ -1,0 +1,59 @@
+spring:
+  redis:
+    jedis:
+      pool:
+        max-active: 100
+        max-idle: 100
+        min-idle: 10
+    host: 117.78.8.44
+    port: 6379
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    hikari:
+      #最大连接数
+      maximum-pool-size: 200
+      #超时时间60s
+      connection-timeout: 60000
+      #连接池中允许的连接 最大空闲时间 3     0s
+      idle-timeout: 30000
+      #连接池中最小的空闲连接数
+      minimum-idle: 10
+      #连接任务执行完，归还到连接池之前，自动提交
+      auto-commit: true
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+#      url: jdbc:mysql://localhost:3306/secondkill_db?useSSL=false&characterEncoding=utf8&serverTimezone=UTC
+      url: jdbc:mysql://117.78.8.44:3306/secondkill_db?useSSL=false&characterEncoding=utf8&serverTimezone=UTC
+      username: remote_user
+      password: lcp1
+      max-active: 200
+      initial-size: 10
+      max-wait: 100000
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 1048MB
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    #声明select标签resultType属性的全限定类名简写 默认都是类的首字母小写名称
+  type-aliases-package: com.colin.secondkill.bean
+
+server:
+  port: 8080
+  tomcat:
+    max-threads: 200
+
+my:
+  project:
+    param:
+      salt: llccpp
+      code:
+        expiration-time: 120
+    user:
+      head-img:
+        resource-location: E:/headImg/
+        resource-handler: /img/head/
+        # 默认头像路径
+        default-mapping-path: /img/head/background.jpeg

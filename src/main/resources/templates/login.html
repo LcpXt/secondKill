@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="msapplication-TileColor" content="#0061da">
+        <meta name="theme-color" content="#1643a3">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <link rel="icon" th:href="favicon.ico" type="image/x-icon">
+        <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+
+        <!-- Title -->
+        <title>adminor – Clean & Modern Responsive Bootstrap 4 admin dashboard HTML5 Template.</title>
+
+        <link rel="stylesheet" th:href="@{/assets/fonts/fonts/font-awesome.min.css}">
+
+        <!-- Font Family -->
+        <link th:href="@{https://fonts.googleapis.com/css?family=Lato:300,400,700,900}" rel="stylesheet">
+
+        <!-- Sidemenu Css -->
+        <link th:href="@{/assets/plugins/fullside-menu/css/style.css}" rel="stylesheet">
+        <link th:href="@{/assets/plugins/fullside-menu/waves.min.css}" rel="stylesheet">
+
+        <!-- Dashboard Css -->
+        <link th:href="@{/assets/css/dashboard.css}" rel="stylesheet">
+
+        <!-- c3.js Charts Plugin -->
+        <link th:href="@{/assets/plugins/charts-c3/c3-chart.css}" rel="stylesheet">
+
+        <!-- Custom scroll bar css-->
+        <link th:href="@{/assets/plugins/scroll-bar/jquery.mCustomScrollbar.css}" rel="stylesheet">
+
+        <!---Font icons-->
+        <link th:href="@{/assets/css/icons.css}" rel="stylesheet">
+        <link rel="stylesheet" th:href="@{/assets/plugins/sweet-alert/sweetalert.css}">
+        <script th:src="@{/assets/plugins/sweet-alert/sweetalert.min.js}"></script>
+        <!-- Dashboard js -->
+        <script th:src="@{/assets/js/vendors/jquery-3.2.1.min.js}"></script>
+        <script th:src="@{/assets/js/vendors/bootstrap.bundle.min.js}"></script>
+        <script th:src="@{/assets/js/vendors/jquery.sparkline.min.js}"></script>
+        <script th:src="@{/assets/js/vendors/selectize.min.js}"></script>
+        <script th:src="@{/assets/js/vendors/selectize.min.js}"></script>
+        <script th:src="@{/assets/js/vendors/circle-progress.min.js}"></script>
+        <script th:src="@{/assets/plugins/rating/jquery.rating-stars.js}"></script>
+
+        <!-- Fullside-menu Js-->
+        <script th:src="@{/assets/plugins/fullside-menu/jquery.slimscroll.min.js}"></script>
+        <script th:src="@{/assets/plugins/fullside-menu/waves.min.js}"></script>
+
+        <!-- Custom scroll bar Js-->
+        <script th:src="@{/assets/plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js}"></script>
+
+        <!-- Custom Js-->
+        <script th:src="@{/assets/js/custom.js}"></script>
+        <script th:src="@{/assets/js/axios.js}"></script>
+        <script th:src="@{/assets/js/md5.js}"></script>
+    </head>
+    <body>
+        <div class="login-img">
+            <div id="global-loader"></div>
+            <div class="page">
+                <div class="page-single">
+                    <div class="container">
+                        <div class="row authentication">
+                            <div class="col col-login mx-auto">
+                                <div class="text-center mb-6">
+                                    <img th:src="@{/assets/images/brand/logo.png}" class="h-8" alt="">
+                                </div>
+                                <form class="card" method="post" th:action="@{/user/doLogin}" id="login-form">
+                                    <div class="card-body p-6 ">
+                                        <div class="card-title text-center">登录你的账户</div>
+                                        <div class="input-icon form-group wrap-input">
+											<span class="input-icon-addon search-icon">
+												<i class="mdi mdi-account"></i>
+											</span>
+                                            <input type="text" class="form-control" id="username" placeholder="用户名" name="username">
+                                        </div>
+                                        <div class="input-icon form-group wrap-input">
+											<span class="input-icon-addon search-icon">
+												<i class="zmdi zmdi-lock"></i>
+											</span>
+                                            <input type="password" class="form-control mb-0" id="password" placeholder="密码" name="password">
+                                            <label class="form-label">
+                                                <a th:href="@{/toForgetPassword}" class="float-right small">忘记密码</a>
+                                            </label>
+                                        </div>
+                                        <div class="form-group mt-5">
+                                            <label class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input">
+                                                <span class="custom-control-label">记住我</span>
+                                            </label>
+                                        </div>
+                                        <div class="form-footer">
+                                            <button type="submit" class="btn btn-primary btn-block">登录</button>
+                                        </div>
+                                        <div class="text-center text-muted mt-3">
+                                            没有账户? <a th:href="@{/toRegister}">注册</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script th:if="${fail != null}">
+            swal('用户名或者密码不正确, 请检查', '', 'error');
+        </script>
+        <script>
+            let loginFormElement = document.getElementById('login-form');
+            loginFormElement.onsubmit = function (){
+                let passwordElement = document.getElementById('password');
+                passwordElement.value = b64_md5(passwordElement.value);
+                return true;
+            }
+        </script>
+    </body>
+</html>

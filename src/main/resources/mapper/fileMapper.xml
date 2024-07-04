@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.colin.secondkill.mapper.FileMapper">
+    <insert id="insertHeadImg" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO t_head_img VALUES
+            (NULL, #{user.id}, #{uploadTime}, #{originalPath}, #{mappingPath}, #{imgType}, #{imgSize}, #{originalName})
+    </insert>
+
+
+    <select id="selectFileById" resultType="com.colin.secondkill.bean.HeadImg">
+        SELECT * FROM t_head_img WHERE id = #{param}
+    </select>
+</mapper>

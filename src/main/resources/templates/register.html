@@ -1,0 +1,470 @@
+﻿<!doctype html>
+<html lang="en" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="msapplication-TileColor" content="#0061da">
+    <meta name="theme-color" content="#1643a3">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+
+    <!-- Title -->
+    <title>adminor – Clean & Modern Responsive Bootstrap 4 admin dashboard HTML5 Template.</title>
+
+    <link rel="stylesheet" th:href="@{/assets/fonts/fonts/font-awesome.min.css}">
+
+    <!-- Font Family -->
+    <link th:href="@{https://fonts.googleapis.com/css?family=Lato:300,400,700,900}" rel="stylesheet">
+
+    <!-- Sidemenu Css -->
+    <link th:href="@{/assets/plugins/fullside-menu/css/style.css}" rel="stylesheet">
+    <link th:href="@{/assets/plugins/fullside-menu/waves.min.css}" rel="stylesheet">
+
+    <!-- Dashboard Css -->
+    <link th:href="@{/assets/css/dashboard.css}" rel="stylesheet">
+
+    <!-- c3.js Charts Plugin -->
+    <link th:href="@{/assets/plugins/charts-c3/c3-chart.css}" rel="stylesheet">
+
+    <!-- Custom scroll bar css-->
+    <link th:href="@{/assets/plugins/scroll-bar/jquery.mCustomScrollbar.css}" rel="stylesheet">
+
+    <!---Font icons-->
+    <link th:href="@{/assets/css/icons.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/assets/plugins/sweet-alert/sweetalert.css}">
+    <script th:src="@{/assets/plugins/sweet-alert/sweetalert.min.js}"></script>
+
+    <script th:src="@{https://unpkg.com/axios/dist/axios.min.js}"></script>
+    <!-- Dashboard js -->
+    <script th:src="@{/assets/js/vendors/jquery-3.2.1.min.js}"></script>
+    <script th:src="@{/assets/js/vendors/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/assets/js/vendors/jquery.sparkline.min.js}"></script>
+    <script th:src="@{/assets/js/vendors/selectize.min.js}"></script>
+    <script th:src="@{/assets/js/vendors/selectize.min.js}"></script>
+    <script th:src="@{/assets/js/vendors/circle-progress.min.js}"></script>
+    <script th:src="@{/assets/plugins/rating/jquery.rating-stars.js}"></script>
+
+    <!-- Fullside-menu Js-->
+    <script th:src="@{/assets/plugins/fullside-menu/jquery.slimscroll.min.js}"></script>
+    <script th:src="@{/assets/plugins/fullside-menu/waves.min.js}"></script>
+
+    <!-- Custom scroll bar Js-->
+    <script th:src="@{/assets/plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js}"></script>
+
+    <!-- Custom Js-->
+    <script th:src="@{/assets/js/custom.js}"></script>
+    <script th:src="@{/assets/js/axios.js}"></script>
+    <script th:src="@{/assets/js/md5.js}"></script>
+</head>
+<body>
+
+<!--可能是正常注册跳转 也可能是注册成功返回 th:if的判断 只有在注册成功返回时才有效-->
+<script th:if="${success}">
+    swal('注册成功 三秒后自动跳转', '', 'success');
+    // 只执行一次的定时任务 3秒后 跳转到toLogin
+    setTimeout(function () {
+        window.location.href = '/toLogin';
+    }, 3000)
+</script>
+
+<div class="login-img">
+    <div id="global-loader"></div>
+    <div class="page">
+        <div class="page-single">
+            <div class="container">
+                <div class="row">
+                    <div class="col col-login mx-auto">
+                        <div class="text-center mb-6">
+                            <img src="assets\images\brand\logo.png" class="h-8" alt="">
+                        </div>
+                        <form th:action="@{/user/doRegister}" class="card authentication" method="post" id="register-form">
+                            <div class="card-body sign-up-page p-7">
+                                <div class="card-title text-center">创建您的账户</div>
+                                <div class="input-icon form-group">
+											<span class="input-icon-addon search-icon">
+												<i class="mdi mdi-account"></i>
+											</span>
+                                    <input type="text" class="form-control" placeholder="用户名" id="username" name="username">
+                                </div>
+                                <div class="input-icon form-group">
+                                    <div class="input-group">
+                                        <span class="input-icon-addon search-icon input-group-prepend" style="z-index: 100">
+                                            <i class="zmdi zmdi-email"></i>
+                                        </span>
+                                        <input type="text" class="form-control" placeholder="请输入邮箱"
+                                               id="email" name="email">
+                                        <span class="input-group-append">
+                                            <button class="btn btn-primary" type="button" id="send-button">发送</button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="input-icon form-group">
+											<span class="input-icon-addon search-icon">
+												<i class="ion-chatbubble"></i>
+											</span>
+                                    <input type="text" class="form-control" placeholder="验证码" id="code" name="code">
+                                </div>
+                                <div class="input-icon form-group">
+											<span class="input-icon-addon search-icon">
+												<i class="zmdi zmdi-lock"></i>
+											</span>
+                                    <input type="password" class="form-control mb-0" id="password" name="password"
+                                           placeholder="至少包含一个特殊字符一个大小写字母">
+                                </div>
+                                <div class="input-icon form-group">
+											<span class="input-icon-addon search-icon">
+												<i class="zmdi zmdi-lock"></i>
+											</span>
+                                    <input type="password" class="form-control mb-0" id="checkPassword"
+                                           placeholder="确认密码">
+                                </div>
+
+                                <div class="input-icon form-group">
+
+                                    <label class="custom-control custom-radio">
+                                        <input type="radio" class="custom-control-input" name="sex"
+                                               value="男" checked="">
+                                        <span class="custom-control-label">男</span>
+                                    </label>
+                                    <label class="custom-control custom-radio">
+                                        <input type="radio" class="custom-control-input" name="sex"
+                                               value="女">
+                                        <span class="custom-control-label">女</span>
+                                    </label>
+                                </div>
+                                <div class="input-icon form-group">
+                                    年龄
+                                    <select name="user[day]" class="form-control custom-select">
+                                        <option value="">Day</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                        <option value="13">13</option>
+                                        <option value="14">14</option>
+                                        <option value="15">15</option>
+                                        <option value="16">16</option>
+                                        <option value="17">17</option>
+                                        <option value="18">18</option>
+                                        <option value="19">19</option>
+                                        <option selected="selected" value="20">20</option>
+                                        <option value="21">21</option>
+                                        <option value="22">22</option>
+                                        <option value="23">23</option>
+                                        <option value="24">24</option>
+                                        <option value="25">25</option>
+                                        <option value="26">26</option>
+                                        <option value="27">27</option>
+                                        <option value="28">28</option>
+                                        <option value="29">29</option>
+                                        <option value="30">30</option>
+                                        <option value="31">31</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mt-5">
+                                    <label class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="agree">
+                                        <span class="custom-control-label">同意 <a
+                                                href="" data-toggle="modal" data-target="#exampleModalLong">条款和协议</a></span>
+                                    </label>
+                                </div>
+                                <div class="form-footer">
+                                    <button type="submit" class="btn btn-primary btn-block">创建</button>
+                                </div>
+                                <div class="text-center text-muted mt-4">
+                                    已经存在一个用户? <a th:href="@{/toLogin}">登录</a>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Small Modal</h3>
+    </div>
+    <div class="card-body">
+        <div class="model-wrapper-demo">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content tx-size-sm">
+                    <div class="modal-header">
+                        <h6 class="tx-14 mg-b-0 tx-uppercase tx-inverse tx-bold">Message Preview</h6>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>This is a modal with small size</p>
+                    </div><!-- modal-body -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div><!-- modal-dialog -->
+        </div>
+    </div>
+</div>
+<!--条款和协议的模态框-->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p> sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                <p>Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.</p>
+                <p>These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. </p>
+                <p> Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
+                <p> No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+
+    // 用户名校验结果
+    let usernameChecked = false;
+    // 验证码校验结果
+    let codeChecked = false;
+
+    // 当文本框失去焦点时 axios 异步校验用户名是否存在
+    let usernameInput = document.getElementById('username');
+    usernameInput.onblur = function () {
+        let usernamePattern = /^[a-zA-Z0-9]{3,12}$/;
+        if (usernamePattern.test(usernameInput.value)) {
+            axios({
+                method: 'GET',
+                url: '/user/checkUsername/' + usernameInput.value
+            }).then(function (response) {
+                if (response.data.status === 'SUCCESS') {
+                    swal(response.data.message, '', 'success')
+                    // 如果不存在 将校验结果设置为true
+                    usernameChecked = true;
+                } else {
+                    swal(response.data.message, '', 'error');
+                    usernameChecked = false;
+                }
+            });
+        } else {
+            swal('用户名格式不符合要求', '', 'error');
+            usernameChecked = false;
+        }
+
+
+
+    }
+
+    // 发送邮件
+    // 当用户点击发送按钮时 axios异步让服务端向指定邮箱发送 邮件 并缓存 邮箱: 验证码 的kv对
+    let emailInput = document.getElementById('email');
+    let sendButton = document.getElementById('send-button');
+    sendButton.onclick = function () {
+
+        let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        let checkedResult = emailPattern.test(emailInput.value);
+
+
+        if (emailPattern.test(emailInput.value)) {
+            axios({
+                method: 'GET',
+                url: '/user/sendEmail/' + emailInput.value + '/0'
+            }).then(function (response) {
+                response.data.status === 'SUCCESS' ? swal(response.data.message, '', 'success') : swal(response.data.message, '', 'error');
+            });
+        } else {
+            swal('邮箱格式不符合规则', '', 'error');
+        }
+    }
+
+    // 校验验证码
+    let codeElement = document.getElementById('code');
+    codeElement.onblur = function () {
+        axios({
+            method: 'GET',
+            url: '/user/checkCode/' + codeElement.value + '/' + emailInput.value
+        }).then(function (response) {
+            if (response.data.status === 'SUCCESS') {
+                codeChecked = true;
+                // 这个不要了 交互太多
+                // swal('验证码正确', '', 'success');
+            } else {
+                codeChecked = false;
+            }
+        })
+    }
+
+    // 密码是否符合正则校验
+    let passwordChecked = false;
+    let passwordElement = document.getElementById('password');
+    passwordElement.onblur = function () {
+        let passwordPattern = /^.*(?=.{6,})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).*$/;
+        if (!passwordPattern.test(passwordElement.value)) {
+            swal("密码不符合格式要求", "", "error");
+            // 防止用户第一次输入密码时可用 但是后续又改动为一个不可用的密码 必须将校验结果还原为false
+            passwordChecked = false;
+        } else {
+            // 如果用户密码符合正则 那么将校验结果置为true 用于后续的表单提交前验证
+            passwordChecked = true;
+        }
+        console.log(passwordPattern.test(passwordPattern.value));
+    }
+
+    // passwordElement.onblur = () => {
+    //
+    // }
+
+    // 表单提交前验证
+    // 当所有校验结果为true时 表单提交
+    let registerForm = document.getElementById('register-form');
+    registerForm.onsubmit = function () {
+
+        let password = document.getElementById('password').value;
+        let checkPassword = document.getElementById('checkPassword').value;
+        let checkBoxElement = document.getElementById('agree');
+        // 校验通过时 对密码进行md5加密 防止F12解析查看
+        if (password === checkPassword && usernameChecked && codeChecked && passwordChecked && checkBoxElement.checked) {
+            document.getElementById('password').value = b64_md5(password);
+            document.getElementById('checkPassword').value = b64_md5(password);
+            console.log("加密后密码："+password.value);
+            return true;
+        }
+        // 校验不通过时 将所有变量初始为false状态
+        // 看看谁是false 这个sweet alert 就来一个具体的提示 让用户去更改具体的注册表单内容
+        swal('校验不通过', '', 'error');
+
+        return false;
+
+    }
+
+</script>
+<!--<script>-->
+
+<!--    // 现在有一个很主流的发送异步请求的js的工具包 jquery  ->   axios-->
+<!--    let usernameChecked = false;-->
+<!--    let codeChecked = false;-->
+<!--    let usernameInput = document.getElementById('username');-->
+<!--    usernameInput.onblur = function () {-->
+<!--        -->
+<!--        let usernamePattern = /^[a-zA-Z0-9]{3,12}$/;-->
+<!--        if (usernamePattern.test(usernameInput.value)) {-->
+<!--            axios({-->
+<!--                method: 'GET',-->
+<!--                url: '/user/checkUsername/' + usernameInput.value-->
+<!--            }).then(function (response) {-->
+<!--                if (response.data.status === 'SUCCESS') {-->
+<!--                    swal(response.data.message, '', 'success')-->
+<!--                    // 如果不存在 将校验结果设置为true-->
+<!--                    usernameChecked = true;-->
+<!--                } else {-->
+<!--                    swal(response.data.message, '', 'error');-->
+<!--                    usernameChecked = false;-->
+<!--                }-->
+<!--            });-->
+<!--        } else {-->
+<!--            swal('用户名格式不符合要求', '', 'error');-->
+<!--            usernameChecked = false;-->
+<!--        }-->
+<!--    }-->
+
+<!--    let codeElement = document.getElementById('code');-->
+<!--    codeElement.onblur = function (){-->
+<!--        axios({-->
+<!--            method: "GET",-->
+<!--            url: '/user/checkCode/' + codeElement.value + '/' + emailInput.value-->
+<!--        }).then(function (response){-->
+<!--            if (response.data.status === 'SUCCESS'){-->
+<!--                codeChecked = true;-->
+<!--            }-->
+<!--        })-->
+<!--    }-->
+
+<!--    let sendButton = document.getElementById('send-button');-->
+<!--    let emailInput = document.getElementById('email');-->
+<!--    sendButton.onclick = function () {-->
+<!--        -->
+<!--        let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;-->
+<!--        let checkedResult = emailPattern.test(emailInput.value);-->
+
+
+<!--        if (emailPattern.test(emailInput.value)) {-->
+<!--            axios({-->
+<!--                method: 'GET',-->
+<!--                url: '/user/sendEmail/' + emailInput.value + '/0'-->
+<!--            }).then(function (response) {-->
+<!--                response.data.status === 'SUCCESS' ? swal(response.data.message, '', 'success') : swal(response.data.message, '', 'error');-->
+<!--            });-->
+<!--        } else {-->
+<!--            swal('邮箱格式不符合规则', '', 'error');-->
+<!--        }-->
+<!--    }-->
+
+<!--    // 密码是否符合正则校验-->
+<!--    let passwordChecked = false;-->
+<!--    let passwordElement = document.getElementById('password');-->
+<!--    passwordElement.onblur = function () {-->
+<!--        let passwordPattern = /^.*(?=.{6,})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).*$/;-->
+<!--        if (!passwordPattern.test(passwordElement.value)) {-->
+<!--            swal("密码不符合格式要求", "", "error");-->
+<!--            // 防止用户第一次输入密码时可用 但是后续又改动为一个不可用的密码 必须将校验结果还原为false-->
+<!--            passwordChecked = false;-->
+<!--        } else {-->
+<!--            // 如果用户密码符合正则 那么将校验结果置为true 用于后续的表单提交前验证-->
+<!--            passwordChecked = true;-->
+<!--        }-->
+<!--        console.log(passwordPattern.test(passwordPattern.value));-->
+<!--    }-->
+
+<!--    let registerForm = document.getElementById('register-form');-->
+<!--    registerForm.onsubmit = function (){-->
+
+<!--        let password = document.getElementById('password').value;-->
+<!--        let checkPassword = document.getElementById('checkPassword').value;-->
+<!--        let checkBoxElement = document.getElementById('agree');-->
+
+<!--        if (password === checkPassword && usernameChecked && codeChecked && passwordChecked && checkBoxElement.checked) {-->
+<!--            document.getElementById('password').value = b64_md5(password);-->
+<!--            document.getElementById('checkPassword').value = b64_md5(password);-->
+<!--            return true;-->
+<!--        }-->
+<!--        console.log("密码一致性" + password === checkPassword)-->
+<!--        console.log("用户名检验" + usernameChecked)-->
+<!--        console.log("验证码检验" + codeChecked)-->
+<!--        console.log("勾选框检验" + document.getElementById('agree').checked)-->
+
+<!--        swal('校验不通过', '', 'error');-->
+<!--        return false;-->
+<!--    }-->
+
+<!--</script>-->
+</body>
+</html>
