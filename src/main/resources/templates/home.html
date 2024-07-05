@@ -1,171 +1,264 @@
-<!doctype html>
-<html lang="en" dir="ltr" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="msapplication-TileColor" content="#0061da">
-        <meta name="theme-color" content="#1643a3">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="mobile-web-app-capable" content="yes">
-        <meta name="HandheldFriendly" content="True">
-        <meta name="MobileOptimized" content="320">
-        <link rel="stylesheet" th:href="@{/assets/fonts/fonts/font-awesome.min.css}">
-        <link rel="stylesheet" th:href="@{/assets/plugins/fileuploads/css/dropzone.css}">
-        <!-- Font Family -->
-        <link th:href="@{https://fonts.googleapis.com/css?family=Lato:300,400,700,900}" rel="stylesheet">
-        <link rel="stylesheet" th:href="@{/assets/css/bootstrap.css}">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="msapplication-TileColor" content="#0061da">
+    <meta name="theme-color" content="#1643a3">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <link rel="icon" th:href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 
-        <!-- Sidemenu Css -->
-        <link th:href="@{/assets/plugins/fullside-menu/css/style.css}" rel="stylesheet">
-        <link th:href="@{/assets/plugins/fullside-menu/waves.min.css}" rel="stylesheet">
+    <!-- Title -->
+    <title>adminor – Clean & Modern Responsive Bootstrap 4 admin dashboard HTML5 Template.</title>
 
-        <!-- Dashboard Css -->
-        <link th:href="@{/assets/css/dashboard.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/assets/fonts/fonts/font-awesome.min.css}">
 
-        <!-- c3.js Charts Plugin -->
-        <link th:href="@{/assets/plugins/charts-c3/c3-chart.css}" rel="stylesheet">
+    <!-- Font Family -->
+    <link th:href="@{https://fonts.googleapis.com/cs?family=Lato:300,400,700,900}" rel="stylesheet">
 
-        <!-- Custom scroll bar css-->
-        <link th:href="@{/assets/plugins/scroll-bar/jquery.mCustomScrollbar.css}" rel="stylesheet">
+    <!-- Sidemenu Css -->
+    <link th:href="@{/assets/plugins/fullside-menu/css/style.css}" rel="stylesheet">
+    <link th:href="@{/assets/plugins/fullside-menu/waves.min.css}" rel="stylesheet">
 
-        <!---Font icons-->
-        <link th:href="@{/assets/css/icons.css}" rel="stylesheet">
-        <link rel="stylesheet" th:href="@{/assets/plugins/sweet-alert/sweetalert.css}">
-        <script th:src="@{/assets/plugins/sweet-alert/sweetalert.min.js}"></script>
-        <!-- Dashboard js -->
-        <script th:src="@{/assets/js/vendors/jquery-3.2.1.min.js}"></script>
-        <script th:src="@{/assets/js/vendors/bootstrap.bundle.min.js}"></script>
-        <script th:src="@{/assets/js/vendors/jquery.sparkline.min.js}"></script>
-        <script th:src="@{/assets/js/vendors/selectize.min.js}"></script>
-        <script th:src="@{/assets/js/vendors/selectize.min.js}"></script>
-        <script th:src="@{/assets/js/vendors/circle-progress.min.js}"></script>
-        <script th:src="@{/assets/plugins/rating/jquery.rating-stars.js}"></script>
+    <!-- Dashboard Css -->
+    <link th:href="@{/assets/css/dashboard.css}" rel="stylesheet">
 
-        <!-- Fullside-menu Js-->
-        <script th:src="@{/assets/plugins/fullside-menu/jquery.slimscroll.min.js}"></script>
-        <script th:src="@{/assets/plugins/fullside-menu/waves.min.js}"></script>
+    <!-- c3.js Charts Plugin -->
+    <link th:href="@{/assets/plugins/charts-c3/c3-chart.css}" rel="stylesheet">
 
-        <!-- Custom scroll bar Js-->
-        <script th:src="@{/assets/plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js}"></script>
+    <!-- Custom scroll bar css-->
+    <link th:href="@{/assets/plugins/scroll-bar/jquery.mCustomScrollbar.css}" rel="stylesheet">
 
-        <!-- Custom Js-->
-        <script th:src="@{/assets/js/custom.js}"></script>
-        <script th:src="@{/assets/js/axios.js}"></script>
-        <script th:src="@{/assets/js/md5.js}"></script>
-        <script th:src="@{/assets/plugins/fileuploads/js/dropzone.js}"></script>
+    <!---Font icons-->
+    <link th:href="@{/assets/css/icons.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/assets/plugins/sweet-alert/sweetalert.css}">
+    <script th:src="@{/assets/plugins/sweet-alert/sweetalert.min.js}"></script>
+    <!-- Dashboard js -->
+    <script th:src="@{/assets/js/vendors/jquery-3.2.1.min.js}"></script>
+    <script th:src="@{/assets/js/vendors/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/assets/js/vendors/jquery.sparkline.min.js}"></script>
+    <script th:src="@{/assets/js/vendors/selectize.min.js}"></script>
+    <script th:src="@{/assets/js/vendors/selectize.min.js}"></script>
+    <script th:src="@{/assets/js/vendors/circle-progress.min.js}"></script>
+    <script th:src="@{/assets/plugins/rating/jquery.rating-stars.js}"></script>
 
+    <!-- Fullside-menu Js-->
+    <script th:src="@{/assets/plugins/fullside-menu/jquery.slimscroll.min.js}"></script>
+    <script th:src="@{/assets/plugins/fullside-menu/waves.min.js}"></script>
 
-    </head>
-    <body class="">
-        <div id="global-loader"></div>
-        <div class="page">
-            <div class="page-main">
+    <!-- Custom scroll bar Js-->
+    <script th:src="@{/assets/plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js}"></script>
 
-                <div class="app-header1 header py-1 d-flex">
-                    <div class="container-fluid">
-                        <div class="d-flex">
-                            <a class="header-brand" href="index-1.html">
-                                <img th:src="@{/assets/images/brand/logo.png}" class="header-brand-img" alt="adminor logo">
+    <!-- Custom Js-->
+    <script th:src="@{/assets/js/custom.js}"></script>
+    <script th:src="@{/assets/js/axios.js}"></script>
+    <script th:src="@{/assets/js/md5.js}"></script>
+</head>
+<body>
+
+<div id="global-loader"></div>
+<div class="page">
+    <div class="page-main">
+        <div class="app-header1 header py-1 d-flex">
+            <div class="container-fluid">
+                <div class="d-flex">
+                    <a class="header-brand" href="index-1.html">
+                        <img th:src="@{/assets/images/brand/logo.png}" class="header-brand-img" alt="adminor logo">
+                    </a>
+                    <div class="d-flex order-lg-2 ml-auto header-right-icons header-search-icon">
+                        <div class="p-2">
+                            <form class="input-icon ">
+                                <div class="input-icon-addon">
+                                    <i class="fe fe-search"></i>
+                                </div>
+                                <input type="search" class="form-control header-search" placeholder="Search&hellip;" tabindex="1">
+                            </form>
+                        </div>
+
+                        <div class="dropdown d-none d-md-flex">
+                            <a class="nav-link icon full-screen-link nav-link-bg">
+                                <i class="fa fa-expand" id="fullscreen-button"></i>
                             </a>
-                            <div class="d-flex order-lg-2 ml-auto header-right-icons header-search-icon">
-                                <div class="p-2">
-                                    <form class="input-icon ">
-                                        <div class="input-icon-addon">
-                                            <i class="fe fe-search"></i>
-                                        </div>
-                                        <input type="search" class="form-control header-search" placeholder="搜索&hellip;" tabindex="1">
-                                    </form>
-                                </div>
+                        </div>
 
-                                <div class="dropdown d-none d-md-flex">
-                                    <a class="nav-link icon" data-toggle="dropdown">
-                                        <i class="fa fa-bell-o"></i>
-                                        <span class="nav-unread bg-warning"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                        <!--                                        <a href="#" class="dropdown-item d-flex pb-3">-->
-                                        <!--                                            <div class="notifyimg">-->
-                                        <!--                                                <i class="fa fa-thumbs-o-up"></i>-->
-                                        <!--                                            </div>-->
-                                        <!--                                            <div>-->
-                                        <!--                                                <strong>Someone likes our posts.</strong>-->
-                                        <!--                                                <div class="small text-muted">3 hours ago</div>-->
-                                        <!--                                            </div>-->
-                                        <!--                                        </a>-->
-                                        <div class="dropdown-divider"></div>
-                                        <a href="#" class="dropdown-item text-center">查看所有通知</a>
+                        <div class="dropdown d-none d-md-flex">
+                            <a class="nav-link icon" data-toggle="dropdown">
+                                <i class="fa fa-bell-o"></i>
+                                <span class="nav-unread bg-warning"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                <a href="#" class="dropdown-item d-flex pb-3">
+                                    <div class="notifyimg">
+                                        <i class="fa fa-thumbs-o-up"></i>
                                     </div>
-                                </div>
-                                <div class="dropdown d-none d-md-flex">
-                                    <a class="nav-link icon text-center" data-toggle="dropdown">
-                                        <i class="icon icon-speech"></i>
-                                        <span class=" nav-unread badge badge-info badge-pill">99+</span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                        <a href="#" class="dropdown-item text-center">2 New Messages</a>
-                                        <div class="dropdown-divider"></div>
-                                        <!--                                        <a href="#" class="dropdown-item d-flex pb-3">-->
-                                        <!--                                            <span class="avatar brround mr-3 align-self-center cover-image" data-image-src="assets/images/faces/male/41.jpg"></span>-->
-                                        <!--                                            <div>-->
-                                        <!--                                                <strong>Madeleine</strong> Hey! there I' am available....-->
-                                        <!--                                                <div class="small text-muted">3 hours ago</div>-->
-                                        <!--                                            </div>-->
-                                        <!--                                        </a>-->
-                                        <div class="dropdown-divider"></div>
-                                        <a href="#" class="dropdown-item text-center">查看所有消息</a>
+                                    <div>
+                                        <strong>Someone likes our posts.</strong>
+                                        <div class="small text-muted">3 hours ago</div>
                                     </div>
-                                </div>
-                                <div class="dropdown text-center selector">
-                                    <a href="#" class="nav-link leading-none" data-toggle="dropdown">
-                                        <!--                                        data-image-src="assets/images/default-head.jpg"-->
-                                        <span class="avatar avatar-sm brround cover-image" >
-                                            <img th:src="@{${session.loginUser.headImg}}" alt="" class="img-circle">
-                                        </span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow ">
-                                        <div class="text-center">
-                                            <a href="#" class="dropdown-item text-center font-weight-sembold user" data-toggle="dropdown" th:text="${session.loginUser.username}">Joyce Stewart</a>
-                                            <span class="text-center user-semi-title text-dark" th:text="${session.loginUser.email}"></span>
-                                            <div class="dropdown-divider"></div>
-                                        </div>
-                                        <a class="dropdown-item" th:href="@{/toPersonalCenter}">
-                                            <i class="dropdown-icon mdi mdi-account-outline"></i> 个人中心
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="dropdown-icon mdi mdi-account-outline"></i> 创作者中心
-                                        </a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="dropdown-icon mdi mdi-compass-outline"></i> 帮助
-                                        </a>
-                                        <a class="dropdown-item" href="login.html">
-                                            <i class="dropdown-icon mdi  mdi-logout-variant"></i> 退出登录
-                                        </a>
+                                </a>
+                                <a href="#" class="dropdown-item d-flex pb-3">
+                                    <div class="notifyimg">
+                                        <i class="fa fa-commenting-o"></i>
                                     </div>
+                                    <div>
+                                        <strong> 3 New Comments</strong>
+                                        <div class="small text-muted">5  hour ago</div>
+                                    </div>
+                                </a>
+                                <a href="#" class="dropdown-item d-flex pb-3">
+                                    <div class="notifyimg">
+                                        <i class="fa fa-cogs"></i>
+                                    </div>
+                                    <div>
+                                        <strong> Server Rebooted.</strong>
+                                        <div class="small text-muted">45 mintues ago</div>
+                                    </div>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a href="#" class="dropdown-item text-center">View all Notification</a>
+                            </div>
+                        </div>
+                        <div class="dropdown d-none d-md-flex">
+                            <a class="nav-link icon text-center" data-toggle="dropdown">
+                                <i class="icon icon-speech"></i>
+                                <span class=" nav-unread badge badge-info badge-pill">2</span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                <a href="#" class="dropdown-item text-center">2 New Messages</a>
+                                <div class="dropdown-divider"></div>
+                                <a href="#" class="dropdown-item d-flex pb-3">
+                                    <span class="avatar brround mr-3 align-self-center cover-image" data-image-src="assets/images/faces/male/41.jpg"></span>
+                                    <div>
+                                        <strong>Madeleine</strong> Hey! there I' am available....
+                                        <div class="small text-muted">3 hours ago</div>
+                                    </div>
+                                </a>
+                                <a href="#" class="dropdown-item d-flex pb-3">
+                                    <span class="avatar brround mr-3 align-self-center cover-image" data-image-src="assets/images/faces/female/1.jpg"></span>
+                                    <div>
+                                        <strong>Anthony</strong> New product Launching...
+                                        <div class="small text-muted">5  hour ago</div>
+                                    </div>
+                                </a>
+                                <a href="#" class="dropdown-item d-flex pb-3">
+                                    <span class="avatar brround mr-3 align-self-center cover-image" data-image-src="assets/images/faces/female/18.jpg"></span>
+                                    <div>
+                                        <strong>Olivia</strong> New Schedule Realease......
+                                        <div class="small text-muted">45 mintues ago</div>
+                                    </div>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a href="#" class="dropdown-item text-center">See all Messages</a>
+                            </div>
+                        </div>
+                        <div class="dropdown d-none d-md-flex ">
+                            <a class="nav-link icon " data-toggle="dropdown">
+                                <i class="fe fe-grid floating"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                <ul class="drop-icon-wrap p-1">
+                                    <li>
+                                        <a href="email.html" class="drop-icon-item">
+                                            <i class="fe fe-mail text-dark"></i>
+                                            <span class="block"> E-mail</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="calendar2.html" class="drop-icon-item">
+                                            <i class="fe fe-calendar text-dark"></i>
+                                            <span class="block">calendar</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="maps.html" class="drop-icon-item">
+                                            <i class="fe fe-map-pin text-dark"></i>
+                                            <span class="block">map</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="cart.html" class="drop-icon-item">
+                                            <i class="fe fe-shopping-cart text-dark"></i>
+                                            <span class="block">Cart</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="chat.html" class="drop-icon-item">
+                                            <i class="fe fe-message-square text-dark"></i>
+                                            <span class="block">chat</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="profile.html" class="drop-icon-item">
+                                            <i class="fe fe-phone-outgoing text-dark"></i>
+                                            <span class="block">contact</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="dropdown-divider"></div>
+                                <a href="#" class="dropdown-item text-center">View all</a>
+                            </div>
+                        </div>
+                        <div class="dropdown text-center selector">
+                            <a href="#" class="nav-link leading-none" data-toggle="dropdown">
+                                <span class="avatar avatar-sm brround" th:style="'background-image: url(' + ${loginUser.headImg} + ')'"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow ">
+                                <div class="text-center">
+                                    <a href="#" class="dropdown-item text-center font-weight-sembold user" data-toggle="dropdown" th:text="${loginUser.username}"></a>
+                                    <span class="text-center user-semi-title text-dark" th:text="${loginUser.email}"></span>
+                                    <div class="dropdown-divider"></div>
                                 </div>
+                                <a class="dropdown-item" th:href="@{'/user/getLoginUserInfo'}">
+                                    <i class="dropdown-icon mdi mdi-account-outline"></i> 个人中心
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="dropdown-icon  mdi mdi-settings"></i> 预留选项
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <span class="float-right"><span class="badge badge-primary">6</span></span>
+                                    <i class="dropdown-icon mdi  mdi-message-outline"></i> 预留选项
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="dropdown-icon mdi mdi-comment-check-outline"></i> 预留选项
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">
+                                    <i class="dropdown-icon mdi mdi-compass-outline"></i> 需要帮助?
+                                </a>
+                                <a class="dropdown-item" th:href="@{'/user/logout'}">
+                                    <i class="dropdown-icon mdi  mdi-logout-variant"></i> 登出
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
-            <!--footer-->
-            <footer class="footer">
-                <div class="container">
-                    <div class="row align-items-center flex-row-reverse">
-                        <div class="col-lg-12 col-sm-12 mt-3 mt-lg-0 text-center">
-                            Copyright © 2018 <a href="http://www.bootstrapmb.com/" title="bootstrapmb">adminor</a>. Designed by <a href="#">Spruko</a> All rights reserved.
-                        </div>
-                    </div>
-                </div>
-            </footer>
-            <!-- End Footer-->
+            </div>
         </div>
+    </div>
 
-        <!-- Back to top -->
-        <a href="#top" id="back-to-top" style="display: inline;"><i class="fa fa-angle-up"></i></a>
+    <!--footer-->
+    <footer class="footer">
+        <div class="container">
+            <div class="row align-items-center flex-row-reverse">
+                <div class="col-md-12 col-sm-12 mt-3 mt-lg-0 text-center">
+                    Copyright © 2018 <a href="http://www.17sucai.com/" title="17sucai">adminor</a>. Designed by <a href="#">Spruko</a> All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- End Footer-->
+</div>
 
-    </body>
+<!-- Back to top -->
+<a href="#top" id="back-to-top" style="display: inline;"><i class="fa fa-angle-up"></i></a>
+
+
+
+</body>
 </html>

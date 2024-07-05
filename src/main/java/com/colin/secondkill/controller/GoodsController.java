@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping("/video")
-public class VideoController {
+public class GoodsController {
 
     @RequestMapping("/getHomeVideos")
     public String getHomeVideos(Model model){

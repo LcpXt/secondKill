@@ -1,5 +1,6 @@
 package com.colin.secondkill.controller;
 
+import com.colin.secondkill.annotation.LoginStatus;
 import com.colin.secondkill.service.FileService;
 import com.colin.secondkill.util.response.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public class FileController {
 
     @RequestMapping("/file/checkFileMD5/{md5}")
     @ResponseBody
+    @LoginStatus
     public ResponseResult<String> checkFileMD5(@PathVariable String md5, HttpSession session) {
         return fileService.checkFileMD5(md5, session);
     }

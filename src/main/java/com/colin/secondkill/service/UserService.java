@@ -8,8 +8,10 @@ import org.springframework.http.HttpRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 /**
  * 2024年03月23日17:01
@@ -26,9 +28,11 @@ public interface UserService {
 
     boolean changePassword(String email, String password);
 
-    User doLogin(String username, String password);
+    User doLogin(String username, String password, HttpServletResponse response);
 
     ResponseResult<String> headImgUpload(MultipartFile multipartFile, HttpSession session, String md5) throws IOException, NullFileException, ReadWriteFileException;
 
     ResponseResult<String> updatePersonalInfo(User user, HttpSession session);
+
+    User getLoginUserInfo(String longToken) throws UnsupportedEncodingException;
 }

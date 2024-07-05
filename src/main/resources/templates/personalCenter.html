@@ -64,6 +64,8 @@
     <script th:src="@{/assets/plugins/dropzone/dropzone.js}"></script>
 
     <script th:src="@{/assets/js/spark-md5.js}"></script>
+    <script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
+    <link th:href="@{/assets/css/bootstrap.css}"/>
 
 </head>
 <body class="">
@@ -74,7 +76,8 @@
             <div class="container-fluid">
                 <div class="d-flex">
                     <a class="header-brand" href="index-1.html">
-                        <img src="assets\images\brand\logo.png" class="header-brand-img" alt="adminor logo">
+                        <img th:src="@{/assets/images/brand/logo.png}" class="header-brand-img"
+                             alt="adminor logo">
                     </a>
                     <div class="menu-toggle-button">
                         <a class="nav-link wave-effect" href="#" id="sidebarCollapse">
@@ -220,15 +223,15 @@
                         </div>
                         <div class="dropdown text-center selector">
                             <a href="#" class="nav-link leading-none" data-toggle="dropdown">
-                                        <span class="avatar avatar-sm brround"
-                                              th:style="'background-image: url(' + ${session.loginUser.headImg} + ')'"></span>
+                                        <span id="head_img_1" class="avatar avatar-sm brround"
+                                              th:style="'background-image: url(' + ${loginUser.headImg} + ')'"></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow ">
                                 <div class="text-center">
                                     <a href="#" class="dropdown-item text-center font-weight-sembold user"
-                                       data-toggle="dropdown" th:text="${session.loginUser.username}"></a>
+                                       data-toggle="dropdown" th:text="${loginUser.username}"></a>
                                     <span class="text-center user-semi-title text-dark"
-                                          th:text="${session.loginUser.email}"></span>
+                                          th:text="${loginUser.email}"></span>
                                     <div class="dropdown-divider"></div>
                                 </div>
                                 <a class="dropdown-item" href="#">
@@ -248,8 +251,8 @@
                                 <a class="dropdown-item" href="#">
                                     <i class="dropdown-icon mdi mdi-compass-outline"></i> Need help?
                                 </a>
-                                <a class="dropdown-item" href="/user/logout">
-                                    <i class="dropdown-icon mdi  mdi-logout-variant"></i> 退出登录
+                                <a class="dropdown-item" th:href="@{/user/logout}">
+                                    <i class="dropdown-icon mdi  mdi-logout-variant"></i> 登出
                                 </a>
                             </div>
                         </div>
@@ -266,13 +269,13 @@
                             <div>
                                 <!-- <img th:src="@{${session.loginUser.headImg}}" alt="user-img" class="img-circle">-->
                                 <span class="avatar avatar-sm brround"
-                                      th:style="'background-image: url(' + ${session.loginUser.headImg} + ')'"></span>
+                                      th:style="'background-image: url(' + ${loginUser.headImg} + ')'"></span>
                             </div>
                             <div class="mb-2"><a href="#" class="" data-toggle="" aria-haspopup="true"
                                                  aria-expanded="false"> <span class="font-weight-semibold"
-                                                                              th:text="${session.loginUser.username}"></span>
+                                                                              th:text="${loginUser.username}"></span>
                             </a>
-                                <br><span class="text-gray" th:text="${session.loginUser.email}"></span>
+                                <br><span class="text-gray" th:text="${loginUser.email}"></span>
                             </div>
                         </div>
                     </div>
@@ -349,11 +352,11 @@
                                     <div class="row text-center">
                                         <div class="col-12">
                                                     <span class="avatar avatar-sm brround"
-                                                          th:style="'background-image: url(' + ${session.loginUser.headImg} + ')'"></span>
+                                                          th:style="'background-image: url(' + ${loginUser.headImg} + ')'"></span>
                                         </div>
                                         <div class="col-12">
-                                            <h4 class="mb-1 mt-2 " th:text="${session.loginUser.username}"></h4>
-                                            <p class="mb-0" th:text="${session.loginUser.email}"></p>
+                                            <h4 class="mb-1 mt-2 " th:text="${loginUser.username}"></h4>
+                                            <p class="mb-0" th:text="${loginUser.email}"></p>
                                         </div>
                                     </div>
                                 </form>
@@ -363,9 +366,9 @@
                                 <div class="form-group">
                                     <label class="form-label">用户名</label>
                                     <input type="text" class="form-control" name="example-text-input"
-                                           th:value="${session.loginUser.username}" id="username">
-                                    <input type="hidden" th:value="${session.loginUser.username}" id="usernameOriginal">
-                                    <input type="hidden" th:value="${session.loginUser.id}" id="id">
+                                           th:value="${loginUser.username}" id="username">
+                                    <input type="hidden" th:value="${loginUser.username}" id="usernameOriginal">
+                                    <input type="hidden" th:value="${loginUser.id}" id="id">
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">密码</label>
@@ -373,7 +376,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">确认密码</label>
-                                    <input type="password" class="form-control" name="password" id="passwordChecked">
+                                    <input type="password" class="form-control" name="password"
+                                           id="passwordChecked">
                                 </div>
                                 <!--
                                     下拉框是通过 option标签上的selected属性 来标注当前选项是默认被选中的
@@ -382,28 +386,31 @@
                                 <div class="form-group">
                                     <label class="form-label">年龄</label>
                                     <select name="age" class="form-control custom-select" id="age">
-                                        <option th:each="age:${ageList}" th:text="${age}" th:value="${age}" th:selected="${age == session.loginUser.age}"></option>
+                                        <option th:each="age:${ageList}" th:text="${age}" th:value="${age}"
+                                                th:selected="${age == loginUser.age}"></option>
                                     </select>
-                                    <input type="hidden" th:value="${session.loginUser.age}" id="ageOriginal">
+                                    <input type="hidden" th:value="${loginUser.age}" id="ageOriginal">
                                 </div>
                                 <div class="form-group">
                                     <!--单选框是根据 input type=radio标签上是否存在 checked属性 决定是否被选中-->
                                     <label class="custom-control custom-radio">
                                         <input type="radio" class="custom-control-input" name="sex"
-                                               value="男" th:checked="${session.loginUser.sex == '男'}">
+                                               value="男" th:checked="${loginUser.sex == '男'}">
                                         <span class="custom-control-label">男</span>
                                     </label>
                                     <label class="custom-control custom-radio">
                                         <input type="radio" class="custom-control-input" name="sex"
-                                               value="女" th:checked="${session.loginUser.sex == '女'}">
+                                               value="女" th:checked="${loginUser.sex == '女'}">
                                         <span class="custom-control-label">女</span>
                                     </label>
-                                    <input type="hidden" th:value="${session.loginUser.sex}" id="sexOriginal">
+                                    <input type="hidden" th:value="${loginUser.sex}" id="sexOriginal">
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">个性签名</label>
-                                    <textarea class="form-control" rows="2" th:text="${session.loginUser.description}" id="description"></textarea>
-                                    <input type="hidden" th:value="${session.loginUser.description}" id="descriptionOriginal">
+                                    <textarea class="form-control" rows="2" th:text="${loginUser.description}"
+                                              id="description"></textarea>
+                                    <input type="hidden" th:value="${loginUser.description}"
+                                           id="descriptionOriginal">
                                 </div>
 
                                 <div class="form-footer">
@@ -415,28 +422,104 @@
                                 <p class="card-text">
                                 <div class="media-list">
                                     <!-- media -->
-                                    <div class="media">
+                                    <div class="media" data-toggle="modal" data-target="#updateEmailAndPhone">
                                         <div class="mediaicon bg-secondary">
                                             <i class="fa fa-envelope-o" aria-hidden="true"></i>
                                         </div>
-                                        <div class="media-body ml-5">
+                                        <div class="media-body ml-5" data-toggle="modal" data-target="#myModal">
                                             <h6 class="mediafont text-dark mb-0">绑定邮箱</h6>
-                                            <a class="d-block" href="#" th:text="${session.loginUser.email}"></a>
+                                            <a id="user_email" class="d-block" href="#"
+                                               th:text="${loginUser.email}"></a>
                                         </div>
                                         <!-- media-body -->
                                     </div>
                                     <!-- media -->
-                                    <div class="media">
+                                    <div class="media" data-toggle="modal" data-target="#updateEmailAndPhone">
                                         <div class="mediaicon bg-info">
                                             <i class="fa fa-twitter" aria-hidden="true"></i>
                                         </div>
                                         <div class="media-body ml-5">
                                             <h6 class="mediafont text-dark mb-0">联系电话</h6><a class="d-block"
-                                                                                                 href="#" th:text="${session.loginUser.phoneNumber}"></a>
+                                                                                                 href="#"
+                                                                                                 th:text="${loginUser.phoneNumber}"></a>
                                         </div>
                                         <!-- media-body -->
                                     </div>
                                     <!-- media -->
+                                </div>
+
+
+
+
+                                <div class="modal fade" id="check_code" tabindex="-1" role="dialog"
+                                     aria-labelledby="myModalLabel">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">验证</h4>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close"><span
+                                                        aria-hidden="true">&times;</span></button>
+                                            </div>
+                                            <div id="modal_body_2" class="modal-body" disabled>
+                                                <form class="card" method="post" id="login-form">
+                                                    <div class="card-body p-6 ">
+                                                        <div class="input-icon form-group wrap-input">
+                                                                    <span class="input-icon-addon search-icon">
+                                                                        <i class="mdi mdi-account"></i>
+                                                                    </span>
+                                                            <input type="text" class="form-control"
+                                                                   placeholder="请输入验证码" name="username">
+                                                        </div>
+
+                                                        <div class="form-footer">
+                                                            <button type="button" class="btn btn-default"
+                                                                    data-dismiss="modal">关闭
+                                                            </button>
+                                                            <button id="do_check_code" type="button"
+                                                                    class="btn btn-primary btn-block">提交
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="updateEmailAndPhone" tabindex="-1" role="dialog"
+                                     aria-labelledby="myModalLabel">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="myModalLabel">验证</h4>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close"><span
+                                                        aria-hidden="true">&times;</span></button>
+                                            </div>
+                                            <div id="modal_body_1" class="modal-body">
+                                                <button th:if="${loginUser.phoneNumber != null}" type="button"
+                                                        class="btn btn-warning">手机验证
+                                                </button>
+                                                <button th:unless="${loginUser.phoneNumber != null}"
+                                                        type="button" class="btn btn-default">绑定手机
+                                                </button>
+                                                <button th:if="${loginUser.email != null}" type="button"
+                                                        class="btn btn-warning" id="email_check">邮箱验证
+                                                </button>
+                                                <button th:unless="${loginUser.email != null}" type="button"
+                                                        class="btn btn-default">绑定邮箱
+                                                </button>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default"
+                                                        data-dismiss="modal">关闭
+                                                </button>
+                                                <button type="button" class="btn btn-primary">验证</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -475,7 +558,7 @@
                                 paramName: "headImg", // 这个要和input type=file标签的name属性一致
                                 maxFilesize: 100, // 最大文件大小 100MB 可能是高清图
                                 success: function (file, response) { // 上传成功的回调函数
-                                    location.href = '/toPersonalCenter'
+                                    location.href = '/user/getLoginUserInfo';
                                 },
                                 // file代表当前要上传的文件 done代表一个函数名称 如果我们调用done() 就代表执行上传 如果我们调用done('tips') 拒绝上传并且给用户一个提示
                                 accept: function (file, done) {
@@ -498,7 +581,10 @@
                                             console.log(response.data);
                                             if (response.data.status === 'FILE_EXISTS') {
                                                 done(response.data.message);
-                                                location.href = '/toPersonalCenter'
+                                                let headImg = response.data.data;
+                                                let headImg1Element = document.getElementById('head_img_1');
+                                                headImg1Element.style.backgroundImage = 'url("' + headImg.mappingPath + '")';
+
                                             } else if (response.data.status === 'FILE_NOT_EXISTS') {
                                                 done();
                                             }
@@ -578,7 +664,7 @@
                                     } else {
                                         swal(response.data.message, '', 'error');
                                     }
-                                    location.href = '/toPersonalCenter';
+                                    location.href = '/user/getLoginUserInfo';
                                 })
                             }
 
@@ -605,6 +691,29 @@
 
 <!-- Back to top -->
 <a href="#top" id="back-to-top" style="display: inline;"><i class="fa fa-angle-up"></i></a>
+
+<script>
+
+    let emailCheck = document.getElementById('email_check');
+    emailCheck.onclick = function () {
+        let userEmail = document.getElementById('user_email').innerText;
+        console.log('userEmail : ' + userEmail);
+
+        axios({
+            method: 'get',
+            url: 'http://localhost:8080/user/sendEmail/' + userEmail + '/2'
+        }).then(function (response) {
+            let responseBody = response.data;
+            if (responseBody.status === 'SUCCESS') {
+                swal(responseBody.message, '', 'success');
+                document.getElementById('updateEmailAndPhone').modal('hide');
+                document.getElementById('check_code').modal('show');
+            }
+        });
+    }
+
+
+</script>
 
 </body>
 </html>

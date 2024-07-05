@@ -4,6 +4,7 @@ import cn.hutool.crypto.digest.MD5;
 import com.alibaba.fastjson2.JSONObject;
 import com.colin.secondkill.annotation.LoginStatus;
 import com.colin.secondkill.bean.User;
+import com.colin.secondkill.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -80,7 +81,7 @@ public class CheckToken implements HandlerInterceptor {
             return false;
         }
         //校验长token是否合法
-        if (!this.checkLongToken(longToken, jedisPool)){
+        if ((this.longTokenId = TokenUtil.checkLongToken(longToken, jedisPool)) == null){
             request.getRequestDispatcher("/toLogin").forward(request, response);
             return false;
         }
@@ -117,7 +118,6 @@ public class CheckToken implements HandlerInterceptor {
             request.getRequestDispatcher("/toLogin").forward(request, response);
             return false;
         }
-
         return true;
     }
 
@@ -133,27 +133,4 @@ public class CheckToken implements HandlerInterceptor {
         return prefix + "-" +md5.digestHex16(prefix);
     }
 
-    /**
-     * 校验长token
-     * @param longToken
-     * @return
-     */
-    private boolean checkLongToken(String longToken, JedisPool jedisPool) {
-        MD5 md5 = MD5.create();
-        int index = longToken.lastIndexOf("-");
-        String longTokenId = longToken.substring(0, index);
-        String signature = longToken.substring(index + 1);
-        String result = md5.digestHex16(longTokenId);
-        if (!result.equals(signature)){
-            return false;
-        }
-        Jedis resource = jedisPool.getResource();
-        //长token虽然合法，但是在redis中已经过期了，还是需要重新登录
-        //剩余时间小于10秒认为他走不完剩余逻辑，也算是过期
-        if (resource.ttl(longTokenId) < 10){
-            return false;
-        }
-        this.longTokenId = longTokenId;
-        return true;
-    }
 }

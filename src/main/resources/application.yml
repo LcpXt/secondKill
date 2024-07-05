@@ -5,8 +5,11 @@ spring:
         max-active: 100
         max-idle: 100
         min-idle: 10
-    host: 117.78.8.44
+        max-wait: 30000
+#    host: 117.78.8.44
     port: 6379
+    timeout: 30000
+    host: localhost
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     hikari:
@@ -22,8 +25,8 @@ spring:
       auto-commit: true
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
-#      url: jdbc:mysql://localhost:3306/secondkill_db?useSSL=false&characterEncoding=utf8&serverTimezone=UTC
-      url: jdbc:mysql://117.78.8.44:3306/secondkill_db?useSSL=false&characterEncoding=utf8&serverTimezone=UTC
+#      url: jdbc:mysql://localhost:3306/secondkill_db?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=utf8&serverTimezone=UTC
+      url: jdbc:mysql://117.78.8.44:3306/secondkill_db?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=utf8&serverTimezone=UTC
       username: remote_user
       password: lcp1
       max-active: 200

@@ -2,10 +2,12 @@ package com.colin.secondkill.controller;
 
 import cn.hutool.crypto.digest.MD5;
 import com.alibaba.fastjson2.JSONObject;
+import com.colin.secondkill.annotation.LoginStatus;
 import com.colin.secondkill.exception.NullFileException;
 import com.colin.secondkill.exception.ReadWriteFileException;
 import com.colin.secondkill.mapper.UserMapper;
 import com.colin.secondkill.util.response.ResponseResult;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,9 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.xml.ws.Response;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -31,7 +36,7 @@ import java.util.UUID;
  */
 @Controller
 @RequestMapping("/user")
-public class UserController {
+public class UserController implements InitializingBean {
 
     @Autowired
     private UserService userService;
@@ -40,7 +45,32 @@ public class UserController {
     private UserMapper userMapper;
     @Autowired
     private JedisPool jedisPool;
+    private List<Integer> ageList;
 
+    /**
+     * Invoked by the containing {@code BeanFactory} after it has set all bean properties
+     * and satisfied {@link BeanFactoryAware}, {@code ApplicationContextAware} etc.
+     * <p>This method allows the bean instance to perform validation of its overall
+     * configuration and final initialization when all bean properties have been set.
+     *
+     * @throws Exception in the event of misconfiguration (such as failure to set an
+     *                   essential property) or if initialization fails for any other reason
+     */
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        this.ageList = new ArrayList<Integer>();
+        for (int i = 17; i <= 61; i++){
+            this.ageList.add(i);
+        }
+    }
+    @RequestMapping("/getLoginUserInfo")
+    @LoginStatus
+    public String getLoginUserInfo(Model model, @CookieValue("longToken") String longToken) throws UnsupportedEncodingException {
+        User user = userService.getLoginUserInfo(longToken);
+        model.addAttribute("loginUser", user);
+        model.addAttribute("ageList", this.ageList);
+        return "personalCenter";
+    }
     @RequestMapping("/checkUsername/{username}")
     @ResponseBody
     public ResponseResult<String> checkUsername(
@@ -113,48 +143,51 @@ public class UserController {
         MD5 md5 = MD5.create();
         long ttl = System.currentTimeMillis() + (20 * 60 * 1000);
         User user = null;
-        if ((user = userService.doLogin(username, password)) == null){
+        if ((user = userService.doLogin(username, password, response)) == null){
             model.addAttribute("fail", true);
             return "login";
         }
         //生成短token，生成后只作为cookie发到客户端存储
-        String prefix = user.getId() + "-" +ttl;
-        String shortToken = prefix + "-" + md5.digestHex16(prefix);
-        Cookie shortCookie = new Cookie("shortToken", shortToken);
-        shortCookie.setMaxAge(20 * 60);
-        response.addCookie(shortCookie);
+//        String prefix = user.getId() + "-" +ttl;
+//        String shortToken = prefix + "-" + md5.digestHex16(prefix);
+//        Cookie shortCookie = new Cookie("shortToken", shortToken);
+//        shortCookie.setMaxAge(20 * 60);
+//        response.addCookie(shortCookie);
 
         //生成长token，生成后作为永不过期的cookie发到客户端，并且同时存到redis中，设置过期时间为30天
-        String uuid = UUID.randomUUID().toString();
-        String longCookieId = uuid + 8000 +System.currentTimeMillis();
-        String signature = md5.digestHex16(longCookieId);
-        String longToken = longCookieId + "-" + signature;
+//        String uuid = UUID.randomUUID().toString();
+//        String longCookieId = uuid + 8000 +System.currentTimeMillis();
+//        String signature = md5.digestHex16(longCookieId);
+//        String longToken = longCookieId + "-" + signature;
 
-        Cookie longCookie = new Cookie("longToken", longToken);
-        longCookie.setMaxAge(365 * 24 * 60 * 60);
-        response.addCookie(longCookie);
-        Jedis resource = jedisPool.getResource();
-        resource.setex(longCookieId, 365 * 24 * 60 * 60, JSONObject.toJSONString(user));
-        resource.close();
-
-        session.setAttribute("loginUser", user);
+//        Cookie longCookie = new Cookie("longToken", longToken);
+//        longCookie.setMaxAge(365 * 24 * 60 * 60);
+//        response.addCookie(longCookie);
+//        Jedis resource = jedisPool.getResource();
+//        resource.setex(longCookieId, 365 * 24 * 60 * 60, JSONObject.toJSONString(user));
+//        resource.close();
+//
+        model.addAttribute("loginUser", user);
         //如果一次接口或者视图的跳转没有用到Request域对象或者Model，能用重定向就用重定向
         //因为用户可能刷新浏览器
         //防止因为地址栏不变导致的表单重复提交
-        return "redirect:/video/getHomeVideos";
+        return "home";
     }
     @RequestMapping("/logout")
+    @LoginStatus
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/toLogin";
     }
     @RequestMapping("updatePersonalInfo")
     @ResponseBody
+    @LoginStatus
     public ResponseResult<String> updatePersonalInfo(@RequestBody User user, HttpSession session){
         return userService.updatePersonalInfo(user, session);
     }
     @RequestMapping("/headImgUpload")
     @ResponseBody
+    @LoginStatus
     public ResponseResult<String> headImgLoad(@RequestParam("headImg") MultipartFile headImg,
                                               @RequestParam("md5") String md5,
                                               HttpSession session) throws IOException, NullFileException, ReadWriteFileException {

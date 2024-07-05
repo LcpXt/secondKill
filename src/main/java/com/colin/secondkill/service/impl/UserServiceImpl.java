@@ -1,6 +1,7 @@
 package com.colin.secondkill.service.impl;
 
 import cn.hutool.crypto.digest.MD5;
+import com.alibaba.fastjson2.JSONObject;
 import com.colin.secondkill.bean.HeadImg;
 import com.colin.secondkill.bean.User;
 import com.colin.secondkill.exception.NullFileException;
@@ -13,6 +14,7 @@ import com.colin.secondkill.service.UserService;
 import com.colin.secondkill.util.EncipherUtil;
 import com.colin.secondkill.util.FileUtils;
 import com.colin.secondkill.util.MailUtils;
+import com.colin.secondkill.util.TokenUtil;
 import com.colin.secondkill.util.response.ResponseResult;
 import com.colin.secondkill.util.response.Status;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +25,14 @@ import org.springframework.web.multipart.MultipartFile;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -156,16 +161,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User doLogin(String username, String password) {
+    public User doLogin(String username, String password, HttpServletResponse response) {
         User user = null;
         final String finalPassword = encipherUtil.doEncipher(password);
-        if ((user = userMapper.selectUserByUsernameAndPassword(username, finalPassword)) != null){
-            final Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-            userMapper.updateLastLoginTime(currentTime, username);
-
-            return user;
+        if ((user = userMapper.selectUserByUsernameAndPassword(username, finalPassword)) == null){
+            return null;
         }
+        final Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+        userMapper.updateLastLoginTime(currentTime, username);
+        user.setUpdateTime(currentTime);
+        String jsonUser = JSONObject.toJSONString(user);
+        //双token缓存登录态 卸载
+        String shotToken = TokenUtil.getShortToken(user.getId());
+        Cookie shortTokenCookie = new Cookie("shortToken", shotToken);
+        shortTokenCookie.setMaxAge(365 * 24 * 60 * 60);
+        response.addCookie(shortTokenCookie);
+
+        String longToken = TokenUtil.getLongToken(jedisPool, jsonUser);
+        Cookie longTokenCookie = new Cookie("longToken", longToken);
+        longTokenCookie.setMaxAge(365 * 24 * 60 * 60);
+        response.addCookie(longTokenCookie);
+
         return user;
+
     }
 
     @Override
@@ -254,5 +272,14 @@ public class UserServiceImpl implements UserService {
             throw new UpdateUserInfoException("修改个人信息异常");
         }
         return responseResult;
+    }
+
+    @Override
+    public User getLoginUserInfo(String longToken) throws UnsupportedEncodingException {
+        String longTokenId =  TokenUtil.getLongTokenIdFromLongToken(longToken);
+        Jedis resource = jedisPool.getResource();
+        String jsonUser = resource.get(longTokenId);
+
+        return JSONObject.parseObject(jsonUser, User.class);
     }
 }
