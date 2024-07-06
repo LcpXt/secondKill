@@ -188,12 +188,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public ResponseResult<String> headImgUpload(MultipartFile multipartFile, HttpSession session, String md5) throws IOException, NullFileException, ReadWriteFileException {
+    public ResponseResult<String> headImgUpload(MultipartFile multipartFile, String shortToken, String longToken, String md5) throws IOException, NullFileException, ReadWriteFileException {
         User loginUser = null;
         HeadImg headImg = null;
         Jedis connection = null;
         try {
-            loginUser = (User) session.getAttribute("loginUser");
+            String longTokenId = TokenUtil.getLongTokenIdFromLongToken(longToken);
+            connection = jedisPool.getResource();
+            String jsonUser = connection.get(longTokenId);
+            loginUser = JSONObject.parseObject(jsonUser, User.class);
             String username = loginUser.getUsername();
             //1.接受文件并存储
             //如果把文件存储在服务所在的主机上，一切和文件相关的路径最好都用变量声明
@@ -231,10 +234,10 @@ public class UserServiceImpl implements UserService {
             //基于@Transactional声明式事务回滚
             fileMapper.insertHeadImg(headImg);
             userMapper.updateHeadImgById(loginUser.getId(), headImg.getMappingPath());
-            connection = jedisPool.getResource();
             connection.zadd("md5FileCache", headImg.getId(), md5);
             loginUser.setHeadImg(headImg.getMappingPath());
-            session.setAttribute("loginUser", loginUser);
+            String jsonUserTemp = JSONObject.toJSONString(loginUser);
+            connection.set(longTokenId, jsonUserTemp);
         } catch (Exception e) {
             File file = null;
             if (headImg != null) {
@@ -257,19 +260,29 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public ResponseResult<String> updatePersonalInfo(User user, HttpSession session) {
+    public ResponseResult<String> updatePersonalInfo(User user, String shortToken, String longToken) {
+        Jedis resource = null;
         try {
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
             user.setUpdateTime(currentTime);
+            if (user.getPassword() != null) {
+                user.setPassword(encipherUtil.doEncipher(user.getPassword()));
+            }
             userMapper.updateUserById(user);
             user = userMapper.selectUserById(user.getId());
-            session.setAttribute("loginUser", user);
+            String longTokenId = TokenUtil.getLongTokenIdFromLongToken(longToken);
+            resource = jedisPool.getResource();
+            resource.set(longTokenId, JSONObject.toJSONString(user));
             responseResult.setStatus(Status.SUCCESS);
             responseResult.setMessage("修改成功");
         } catch (Exception e) {
             responseResult.setStatus(Status.ERROR);
             responseResult.setMessage("服务器异常，请重试");
             throw new UpdateUserInfoException("修改个人信息异常");
+        }finally {
+            if (resource != null) {
+                resource.close();
+            }
         }
         return responseResult;
     }
@@ -279,7 +292,28 @@ public class UserServiceImpl implements UserService {
         String longTokenId =  TokenUtil.getLongTokenIdFromLongToken(longToken);
         Jedis resource = jedisPool.getResource();
         String jsonUser = resource.get(longTokenId);
-
+        resource.close();
         return JSONObject.parseObject(jsonUser, User.class);
+    }
+
+    @Override
+    public void logOut(String shortToken, String longToken, HttpServletResponse response) throws UnsupportedEncodingException {
+        // 1. 删除Redis中longToken中longTokenId的kv (该操作是用户登出逻辑的关键)
+        String longTokenId = TokenUtil.getLongTokenIdFromLongToken(longToken);
+        Jedis resource = jedisPool.getResource();
+        resource.del(longTokenId);
+        // 2. 用重名key 和 同样域的 cookie 覆盖掉客户端的short & long Token 起到删除cookie的作用
+        Cookie cookie1 = new Cookie("shortToken", null);
+        cookie1.setMaxAge(0);
+        cookie1.setDomain("localhost");
+        cookie1.setPath("/");
+        response.addCookie(cookie1);
+
+        Cookie cookie2 = new Cookie("longToken", null);
+        cookie2.setMaxAge(0);
+        cookie2.setDomain("localhost");
+        cookie2.setPath("/");
+        response.addCookie(cookie2);
+        resource.close();
     }
 }

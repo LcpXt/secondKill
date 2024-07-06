@@ -30,9 +30,11 @@ public interface UserService {
 
     User doLogin(String username, String password, HttpServletResponse response);
 
-    ResponseResult<String> headImgUpload(MultipartFile multipartFile, HttpSession session, String md5) throws IOException, NullFileException, ReadWriteFileException;
+    ResponseResult<String> headImgUpload(MultipartFile multipartFile, String shortToken, String longToken, String md5) throws IOException, NullFileException, ReadWriteFileException;
 
-    ResponseResult<String> updatePersonalInfo(User user, HttpSession session);
+    ResponseResult<String> updatePersonalInfo(User user, String shortToken, String longToken);
 
     User getLoginUserInfo(String longToken) throws UnsupportedEncodingException;
+
+    void logOut(String shortToken, String longToken, HttpServletResponse response) throws UnsupportedEncodingException;
 }

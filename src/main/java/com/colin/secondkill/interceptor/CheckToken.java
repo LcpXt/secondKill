@@ -86,51 +86,37 @@ public class CheckToken implements HandlerInterceptor {
             return false;
         }
         MD5 md5 = MD5.create();
+        Jedis resource = jedisPool.getResource();
+        String jsonUser = resource.get(this.longTokenId);
+        User user = JSONObject.parseObject(jsonUser, User.class);
         //如果短token不存在，依赖于长token决定 重新登录 还是 无感刷新
         if (shortToken == null){
             //如果长token合法，实现短token的 无感刷新
-            shortToken = this.createShortToken(jedisPool, this.longTokenId);
+            shortToken = TokenUtil.getShortToken(user.getId());
             Cookie cookie = new Cookie("shortToken", shortToken);
             cookie.setMaxAge(20 * 60);
             response.addCookie(cookie);
+            resource.close();
             return true;
         }
-        //如果短token不是空
-        //开始解析短token
-        //split[0] 用户id
-        //split[1] 短token过期时间
-        //split[2] 0 + 1进行加密算法后得到的数字签名
-        String[] split = shortToken.split("-");
-        String ttlStr = split[1];
-        Long ttl = Long.parseLong(ttlStr);
-        if (ttl < System.currentTimeMillis()){//已经过期了，重新生成一个短的
-            shortToken = this.createShortToken(jedisPool, this.longTokenId);
+        Integer status = TokenUtil.checkShortToken(shortToken);
+        if (TokenUtil.OVER_TIME.equals(status)) {
+            shortToken = TokenUtil.getShortToken(user.getId());
             Cookie cookie = new Cookie("shortToken", shortToken);
             cookie.setMaxAge(365 * 24 * 60 * 60);
+            cookie.setDomain("localhost");
+            cookie.setPath("/");
             response.addCookie(cookie);
             return true;
         }
-        //判断令牌是否合法
-        String prefix = split[0] + "-" + split[1];
-        String s = md5.digestHex(prefix);
-        //短token非法
-        if (!s.equals(split[2])){
-            request.getRequestDispatcher("/toLogin").forward(request, response);
+
+        if (TokenUtil.ILLEGALITY.equals(status)) {
+            request.getRequestDispatcher("/toLogin.html").forward(request, response);
             return false;
         }
         return true;
     }
 
-    public String createShortToken(JedisPool jedisPool, String longTokenId){
-        MD5 md5 = MD5.create();
-        Jedis resource = jedisPool.getResource();
-        String jsonUser = resource.get(longTokenId);
-        User user = JSONObject.parseObject(jsonUser, User.class);
 
-        long ttl = System.currentTimeMillis() + (20 * 60 * 1000);
-        String prefix = user.getId() + "-" + ttl;
-        resource.close();
-        return prefix + "-" +md5.digestHex16(prefix);
-    }
 
 }

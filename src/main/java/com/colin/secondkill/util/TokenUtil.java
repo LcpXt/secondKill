@@ -4,6 +4,8 @@ import cn.hutool.core.codec.Base64;
 import cn.hutool.core.codec.Base64Decoder;
 import cn.hutool.crypto.digest.MD5;
 import com.alibaba.fastjson2.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import sun.misc.BASE64Decoder;
@@ -17,6 +19,20 @@ import java.util.UUID;
  * 2024年07月03日下午4:38
  */
 public class TokenUtil {
+
+    /**
+     * token校验通过
+     */
+    public final static Integer CHECK_OK = 0;
+    /**
+     * token过期
+     */
+    public final static Integer OVER_TIME = 1;
+    /**
+     * token非法
+     */
+    public final static Integer ILLEGALITY = 2;
+
     public static String getShortToken(Integer id){
         MD5 md5 = MD5.create();
         long ttl = System.currentTimeMillis() + (20 * 60 * 1000);
@@ -69,6 +85,9 @@ public class TokenUtil {
      */
     public static String checkLongToken(String longToken, JedisPool jedisPool) {
         MD5 md5 = MD5.create();
+
+        byte[] decode = Base64Decoder.decode(longToken);
+        longToken = new String(decode, StandardCharsets.UTF_8);
         int index = longToken.lastIndexOf("-");
         String longTokenId = longToken.substring(0, index);
         String signature = longToken.substring(index + 1);
@@ -82,6 +101,46 @@ public class TokenUtil {
         if (resource.ttl(longTokenId) < 10){
             return null;
         }
+        resource.close();
         return longTokenId;
+    }
+
+    public static Integer checkShortToken(String shortToken) {
+        MD5 md5 = MD5.create();
+        // 代码能执行到这 意味着短token不是null
+        // 开始解析短token
+        // split[0]=用户id
+        // split[1]=短token过期时间
+        // split[2]=0 + 1 进行 加密算法后得到的数字签名
+        String[] split = shortToken.split("-");
+
+        // 判断令牌是否合法
+        String prefix = split[0] + "-" + split[1];
+        String s = md5.digestHex(prefix);
+
+        // 这个判断如果进去了 意味着此次客户端穿过来的token 我们拿到 id和过期时间戳 加密后算出来的值 和 客户端token的第三个部分 不一致
+        // 也就是非法 那么直接返回
+        if (!s.equals(split[2])) {
+            return ILLEGALITY;
+        }
+
+
+        String ttl = split[1];
+        Long l = Long.parseLong(ttl);
+        // 如果短token ！= null 但是解析后发现短token已经过期 那么依赖于长token无感刷新一个新的短token 用cookie返回给客户端存储
+        if (l - System.currentTimeMillis() < 0) {
+            return OVER_TIME;
+        }
+
+
+        return CHECK_OK;
+    }
+
+    public static String getJSONUserByLongToken(String longToken, JedisPool jedisPool) throws UnsupportedEncodingException {
+        Jedis resource = jedisPool.getResource();
+        String longTokenIdFromLongToken = getLongTokenIdFromLongToken(longToken);
+        String jsonUser = resource.get(longTokenIdFromLongToken);
+        resource.close();
+        return jsonUser;
     }
 }
