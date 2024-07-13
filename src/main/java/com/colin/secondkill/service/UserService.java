@@ -37,4 +37,7 @@ public interface UserService {
     User getLoginUserInfo(String longToken) throws UnsupportedEncodingException;
 
     void logOut(String shortToken, String longToken, HttpServletResponse response) throws UnsupportedEncodingException;
+
+    ResponseResult<String> updateHeadImg(Integer userId, String mappingPath, String longTokenId);
+
 }

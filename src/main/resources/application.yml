@@ -13,10 +13,10 @@ spring:
     timeout: 30000
     host: localhost
   datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
+    type: com.zaxxer.hikari.HikariDataSource
     hikari:
       #最大连接数
-      maximum-pool-size: 200
+      maximum-pool-size: 3000
       #超时时间60s
       connection-timeout: 60000
       #连接池中允许的连接 最大空闲时间 3     0s
@@ -25,15 +25,16 @@ spring:
       minimum-idle: 10
       #连接任务执行完，归还到连接池之前，自动提交
       auto-commit: true
-    druid:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/secondkill_db?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/secondkill_db?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
 #      url: jdbc:mysql://117.78.8.44:3306/secondkill_db?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
-      username: remote_user
-      password: lcp1
-      max-active: 200
-      initial-size: 10
-      max-wait: 100000
+#      username: remote_user
+    username: root
+    password: lcp1
+#      max-active: 200
+#      initial-size: 10
+#      max-wait: 100000
   servlet:
     multipart:
       max-file-size: 1024MB

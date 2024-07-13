@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.colin.secondkill.mapper.GoodsMapper">
+    <update id="updateGoodsInwentoryById">
+        UPDATE t_second_kill_goods SET inventory = inventory - 1 WHERE id = #{param}
+    </update>
+
+
+    <select id="selectGoodsInventoryById" resultType="java.lang.Integer">
+        SELECT inventory FROM t_second_kill_goods WHERE id = #{param} FOR UPDATE
+    </select>
+    <select id="selectGoodsById" resultType="com.colin.secondkill.bean.Goods">
+        SELECT * FROM t_goods WHERE id = #{param}
+    </select>
+    <select id="selectSecondKillGoods" resultType="com.colin.secondkill.bean.Goods">
+        SELECT id, inventory FROM t_second_kill_goods
+    </select>
+</mapper>

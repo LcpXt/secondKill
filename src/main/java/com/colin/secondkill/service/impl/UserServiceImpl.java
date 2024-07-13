@@ -171,15 +171,19 @@ public class UserServiceImpl implements UserService {
         userMapper.updateLastLoginTime(currentTime, username);
         user.setUpdateTime(currentTime);
         String jsonUser = JSONObject.toJSONString(user);
-        //双token缓存登录态 卸载
+        //双token缓存登录态
         String shotToken = TokenUtil.getShortToken(user.getId());
         Cookie shortTokenCookie = new Cookie("shortToken", shotToken);
         shortTokenCookie.setMaxAge(365 * 24 * 60 * 60);
+        shortTokenCookie.setDomain("localhost");
+        shortTokenCookie.setPath("/");
         response.addCookie(shortTokenCookie);
 
         String longToken = TokenUtil.getLongToken(jedisPool, jsonUser);
         Cookie longTokenCookie = new Cookie("longToken", longToken);
         longTokenCookie.setMaxAge(365 * 24 * 60 * 60);
+        longTokenCookie.setDomain("localhost");
+        longTokenCookie.setPath("/");
         response.addCookie(longTokenCookie);
 
         return user;
@@ -279,6 +283,7 @@ public class UserServiceImpl implements UserService {
             responseResult.setStatus(Status.ERROR);
             responseResult.setMessage("服务器异常，请重试");
             throw new UpdateUserInfoException("修改个人信息异常");
+//            System.out.println(e);
         }finally {
             if (resource != null) {
                 resource.close();
@@ -315,5 +320,22 @@ public class UserServiceImpl implements UserService {
         cookie2.setPath("/");
         response.addCookie(cookie2);
         resource.close();
+    }
+
+    @Override
+    public ResponseResult<String> updateHeadImg(Integer userId, String mappingPath, String longTokenId) {
+        if (userMapper.updateHeadImgById(userId, mappingPath)) {
+            User user = userMapper.selectUserById(userId);
+            Jedis resource = jedisPool.getResource();
+            resource.set(longTokenId, JSONObject.toJSONString(user));
+            responseResult.setStatus(Status.SUCCESS);
+            responseResult.setMessage("修改成功");
+            resource.close();
+            return responseResult;
+        }
+
+        responseResult.setStatus(Status.ERROR);
+        responseResult.setMessage("修改失败");
+        return responseResult;
     }
 }

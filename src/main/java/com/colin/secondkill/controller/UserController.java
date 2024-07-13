@@ -161,7 +161,7 @@ public class UserController implements InitializingBean {
         userService.logOut(shortToken, longToken, response);
         return "redirect:/toLogin";
     }
-    @RequestMapping("updatePersonalInfo")
+    @RequestMapping("/updatePersonalInfo")
     @ResponseBody
     @LoginStatus
     public ResponseResult<String> updatePersonalInfo(@RequestBody User user,

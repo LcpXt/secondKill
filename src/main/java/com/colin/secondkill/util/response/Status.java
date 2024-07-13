@@ -32,5 +32,9 @@ public enum Status {
      * 文件不存在
      */
     FILE_NOT_EXISTS,
+    /**
+     * 库存不足
+     */
+    INSUFFICIENT_INVENTORY
 
 }

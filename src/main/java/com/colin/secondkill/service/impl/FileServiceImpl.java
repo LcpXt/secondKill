@@ -7,6 +7,7 @@ import com.colin.secondkill.jedis.FileJedisOperate;
 import com.colin.secondkill.mapper.FileMapper;
 import com.colin.secondkill.mapper.UserMapper;
 import com.colin.secondkill.service.FileService;
+import com.colin.secondkill.service.UserService;
 import com.colin.secondkill.util.TokenUtil;
 import com.colin.secondkill.util.response.ResponseResult;
 import com.colin.secondkill.util.response.Status;
@@ -35,6 +36,8 @@ public class FileServiceImpl implements FileService {
     private UserMapper userMapper;
     @Autowired
     private FileJedisOperate fileJedisOperate;
+    @Autowired
+    private UserService userService;
 
 
     /**
@@ -59,23 +62,21 @@ public class FileServiceImpl implements FileService {
         //1、就算服务端存在文件，但是当前用户的意思是要修改自己的，因此也要改动
         Integer userId = TokenUtil.getIdFromShortToken(shortToken);
         String longTokenId = TokenUtil.getLongTokenIdFromLongToken(longToken);
-//        String jsonUser = TokenUtil.getJSONUserByLongToken(longToken, jedisPool);
-//        User user = JSONObject.parseObject(jsonUser, User.class);
-//
-//        user.setHeadImg(headImg.getMappingPath());
-//        session.setAttribute("loginUser", loginUser);
-        Jedis resource = jedisPool.getResource();
-        String jsonUser = resource.get(longTokenId);
-        User loginUser = JSONObject.parseObject(jsonUser, User.class);
-        loginUser.setHeadImg(headImg.getMappingPath());
-        String jsonUserTemp = JSONObject.toJSONString(loginUser);
-        resource.set(longTokenId, jsonUserTemp);
-        //2、改动user表中绑定的head_img
-        userMapper.updateHeadImgById(userId, headImg.getMappingPath());
+
+//        Jedis resource = jedisPool.getResource();
+//        String jsonUser = resource.get(longTokenId);
+//        User loginUser = JSONObject.parseObject(jsonUser, User.class);
+//        loginUser.setHeadImg(headImg.getMappingPath());
+//        String jsonUserTemp = JSONObject.toJSONString(loginUser);
+//        resource.set(longTokenId, jsonUserTemp);
+//        //2、改动user表中绑定的head_img
+//        userMapper.updateHeadImgById(userId, headImg.getMappingPath());
+
+        userService.updateHeadImg(userId, headImg.getMappingPath(), longTokenId);
+
         responseResult.setStatus(Status.FILE_EXISTS);
         responseResult.setMessage("文件已存在，返回服务端文件信息");
         responseResult.setData(JSONObject.toJSONString(headImg));
-        resource.close();
         return responseResult;
     }
 }

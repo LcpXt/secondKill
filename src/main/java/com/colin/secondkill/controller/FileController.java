@@ -24,7 +24,6 @@ public class FileController {
 
     @RequestMapping("/file/checkFileMD5/{md5}")
     @ResponseBody
-    @LoginStatus
     public ResponseResult<String> checkFileMD5(@PathVariable String md5,
                                                @CookieValue("shortToken") String shortToken,
                                                @CookieValue("longToken") String longToken) throws UnsupportedEncodingException {

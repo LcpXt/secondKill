@@ -21,7 +21,7 @@ public interface UserMapper {
 
     void updateLastLoginTime(Timestamp currentTime, String username);
 
-    void updateHeadImgById(Integer id, String mappingPath);
+    boolean updateHeadImgById(Integer id, String mappingPath);
 
     void updateUserById(User user);
 

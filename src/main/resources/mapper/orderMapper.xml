@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.colin.secondkill.mapper.OrderMapper">
+
+
+    <insert id="insertOrder" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO t_order VALUES (NULL, #{user.id}, #{goodsId}, #{status}, #{createTime}, NULL)
+    </insert>
+    <insert id="insertSecondKillOrder">
+        INSERT INTO t_second_kill_order VALUES (NULL, #{user.id}, #{id}, #{goodsId})
+    </insert>
+</mapper>
