@@ -28,7 +28,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderMapper orderMapper;
 
     @Override
-    public Order createSecondKillOrder(Goods goods, String longToken) throws UnsupportedEncodingException {
+    public Order createSecondKillOrder(Integer goodsId, String longToken) throws UnsupportedEncodingException {
 
         Jedis resource = jedisPool.getResource();
         String jsonUser = TokenUtil.getJSONUserByLongToken(longToken, jedisPool);
@@ -36,7 +36,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = new Order.OrderBuilder()
                     .id(null)
                     .userId(user)
-                    .goodsId(goods.getId())
+                    .goodsId(goodsId)
                     .status(0)
                     .createTime(new Timestamp(System.currentTimeMillis()))
                     .payTime(null)
