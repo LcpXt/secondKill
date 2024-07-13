@@ -16,6 +16,7 @@ import redis.clients.jedis.JedisPool;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 2024年07月06日下午3:07
@@ -29,32 +30,38 @@ public class GoodsServiceImpl implements GoodsService , InitializingBean {
     private OrderService orderService;
     @Autowired
     private JedisPool jedisPool;
+    @Autowired
+    private Map<String, Boolean> map;
 
     @Override
     @Transactional
     public ResponseResult<Order> doSecondKill(int goodsId, String longToken) throws UnsupportedEncodingException {
 
-        Jedis resource = jedisPool.getResource();
-        ResponseResult<Order> result = null;
-        //1.商品库存扣减
-        if (this.decrRedisInventory(goodsId) >= 0){
-            Goods goods = goodsMapper.selectGoodsById(goodsId);
-            //2.下订单，返回商品信息
-            Order order = orderService.createSecondKillOrder(goods, longToken);
-            result = new ResponseResult<>(
-                    Status.SUCCESS,
-                    "秒杀商品成功",
-                    order
-            );
-        }else{
-            result = new ResponseResult<>(
-                    Status.INSUFFICIENT_INVENTORY,
-                    "商品库存不足",
-                    null
-            );
+        synchronized (GoodsServiceImpl.class){
+            Jedis resource = jedisPool.getResource();
+            ResponseResult<Order> result = null;
+            //1.商品库存扣减
+            if (!map.get("goods-" + goodsId)){
+                Goods goods = goodsMapper.selectGoodsById(goodsId);
+                this.decrRedisInventory(goodsId);
+                //2.下订单，返回商品信息
+                Order order = orderService.createSecondKillOrder(goods, longToken);
+                result = new ResponseResult<>(
+                        Status.SUCCESS,
+                        "秒杀商品成功",
+                        order
+                );
+            }else{
+                result = new ResponseResult<>(
+                        Status.INSUFFICIENT_INVENTORY,
+                        "商品库存不足",
+                        null
+                );
+            }
+            resource.close();
+            return result;
         }
-        resource.close();
-        return result;
+
 
 
 //        //1.商品库存扣减
@@ -89,14 +96,17 @@ public class GoodsServiceImpl implements GoodsService , InitializingBean {
         Jedis resource = jedisPool.getResource();
         for (Goods goods : goodsList) {
             resource.set("goods-" + goods.getId(), goods.getInventory() + "");
+            map.put("goods-" + goods.getId(), false);
         }
         resource.close();
     }
 
-    public synchronized long decrRedisInventory(Integer goodsId) {
+    public void decrRedisInventory(Integer goodsId) {
         Jedis resource = jedisPool.getResource();
         long result = resource.decr("goods-" + goodsId);
+        if (result == 0){
+            map.put("goods-" + goodsId, true);
+        }
         resource.close();
-        return result;
     }
 }
