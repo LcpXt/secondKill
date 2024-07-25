@@ -3,9 +3,20 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.colin.secondkill.mapper.GoodsMapper">
-    <update id="updateGoodsInwentoryById">
+    <update id="updateGoodsInventoryById">
         UPDATE t_second_kill_goods SET inventory = inventory - 1 WHERE id = #{param}
     </update>
+    <update id="updateGoodsById">
+        UPDATE t_goods
+        SET name = #{username}, price = #{price}, inventory = #{inventory}
+        WHERE id = #{id}
+    </update>
+    <delete id="deleteGoodsById">
+        DELETE FROM t_goods WHERE id = #{param1}
+    </delete>
+    <delete id="deleteSKGoodsByGoodsId">
+        DELETE FROM t_second_kill_goods WHERE goods_id = #{param1}
+    </delete>
 
 
     <select id="selectGoodsInventoryById" resultType="java.lang.Integer">
@@ -14,7 +25,19 @@
     <select id="selectGoodsById" resultType="com.colin.secondkill.bean.Goods">
         SELECT * FROM t_goods WHERE id = #{param}
     </select>
-    <select id="selectSecondKillGoods" resultType="com.colin.secondkill.bean.Goods">
+    <select id="selectSecondKillGoods" resultType="com.colin.secondkill.bean.SecondKillGoods">
         SELECT id, inventory FROM t_second_kill_goods
+    </select>
+    <select id="getGoodsByGoodsId" resultType="com.colin.secondkill.bean.Goods">
+        SELECT * FROM t_goods WHERE id = #{param1}
+    </select>
+    <select id="getAllGoods" resultType="com.colin.secondkill.bean.Goods">
+        SELECT * FROM t_goods
+    </select>
+    <select id="getAllSecondKillGoods" resultType="com.colin.secondkill.bean.SecondKillGoods">
+        SELECT * FROM t_second_kill_goods
+    </select>
+    <select id="selectSecondKillGoodsByGoodsId" resultType="com.colin.secondkill.bean.SecondKillGoods">
+        SELECT * FROM t_second_kill_goods WHERE goods_id = #{param1}
     </select>
 </mapper>

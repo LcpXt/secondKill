@@ -1,5 +1,6 @@
 package com.colin.secondkill.service;
 
+import com.colin.secondkill.bean.Goods;
 import com.colin.secondkill.bean.Order;
 import com.colin.secondkill.util.response.ResponseResult;
 
@@ -10,4 +11,8 @@ import java.io.UnsupportedEncodingException;
  */
 public interface GoodsService {
     ResponseResult<Order> doSecondKill(int goodsId, String longToken) throws UnsupportedEncodingException;
+
+    ResponseResult<String> deleteGoods(Integer goodsId);
+
+    ResponseResult<String> updateGoodsInfo(Goods goods);
 }

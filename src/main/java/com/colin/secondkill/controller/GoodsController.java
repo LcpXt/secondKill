@@ -24,13 +24,13 @@ public class GoodsController {
     @Autowired
     private GoodsService goodsService;
 
-    @RequestMapping("/doSecondKill/{goodsId}")
+    @RequestMapping("/doSecondKill/{secondKillGoodsId}")
     @LoginStatus
-    public ResponseResult<Order> doSecondKill(@PathVariable("goodsId") int goodsId,
+    public ResponseResult<Order> doSecondKill(@PathVariable("secondKillGoodsId") int secondKillGoodsId,
                                               @CookieValue("longToken") String longToken) throws UnsupportedEncodingException {
         //前端用户点击进入商品详情页，详情页秒杀按钮进入此接口
         //回显给用户一个订单信息，在这个信息的基础上，准备一个支付的入口。
-        return goodsService.doSecondKill(goodsId, longToken);
+        return goodsService.doSecondKill(secondKillGoodsId, longToken);
     }
 
 }

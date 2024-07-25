@@ -1,6 +1,7 @@
 package com.colin.secondkill.mapper;
 
 import com.colin.secondkill.bean.Goods;
+import com.colin.secondkill.bean.SecondKillGoods;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,9 +13,23 @@ import java.util.List;
 public interface GoodsMapper {
     int selectGoodsInventoryById(int goodsId);
 
-    void updateGoodsInwentoryById(int goodsId);
+    void updateGoodsInventoryById(int goodsId);
 
     Goods selectGoodsById(int goodsId);
 
-    List<Goods> selectSecondKillGoods();
+    List<SecondKillGoods> selectSecondKillGoods();
+
+    Goods getGoodsByGoodsId(Integer goodsId);
+
+    List<Goods> getAllGoods();
+
+    List<SecondKillGoods> getAllSecondKillGoods();
+
+    int deleteGoodsById(Integer goodsId);
+
+    int deleteSKGoodsByGoodsId(Integer goodsId);
+
+    SecondKillGoods selectSecondKillGoodsByGoodsId(Integer goodsId);
+
+    void updateGoodsById(Goods goods);
 }
