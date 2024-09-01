@@ -1,5 +1,10 @@
 package com.colin.secondkill.bean;
 
+import com.alibaba.fastjson2.JSONWriter;
+import com.alibaba.fastjson2.annotation.JSONField;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +24,7 @@ import java.sql.Timestamp;
  */
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     // hello
@@ -65,15 +71,13 @@ public class User {
      * 0: 普通用户
      * 1: VIP用户
      * 2: SVIP用户
-     * 3: 创作者
-     * 4: VIP + 创作者
-     * 5: SVIP + 创作者
      */
     private Integer userType;
 
     /**
      * 年龄
      */
+    @JSONField(serializeFeatures = {JSONWriter.Feature.WriteNulls})
     @Min(value = 18, message = "年龄最小值不能小于18")
     @Max(value = 60, message = "年龄最大值不能大于60")
     private Integer age;
@@ -87,6 +91,7 @@ public class User {
     /**
      * VIP / SVIP 过期时间
      */
+    @JSONField(serializeFeatures = {JSONWriter.Feature.WriteNulls})
     private Date expirationDate;
 
     /**
@@ -97,12 +102,20 @@ public class User {
     /**
      * 电话号码
      */
-    private String phoneNumber;
+    @JSONField(serializeFeatures = {JSONWriter.Feature.WriteNulls})
+    private String phoneNum;
 
     /**
      * 个性签名
      */
+    @JSONField(serializeFeatures = {JSONWriter.Feature.WriteNulls})
     private String description;
+
+    /**
+     * 地址
+     */
+    @JSONField(serializeFeatures = {JSONWriter.Feature.WriteNulls})
+    private String address;
 
 
     private User(UserBuilder userBuilder) {
@@ -118,8 +131,9 @@ public class User {
         this.sex = userBuilder.sex;
         this.expirationDate = userBuilder.expirationDate;
         this.headImg = userBuilder.headImg;
-        this.phoneNumber = userBuilder.phoneNumber;
+        this.phoneNum = userBuilder.phoneNumber;
         this.description = userBuilder.description;
+        this.address = userBuilder.address;
     }
 
     public static class UserBuilder {
@@ -137,7 +151,7 @@ public class User {
         private String headImg;
         private String phoneNumber;
         private String description;
-        private String salt;
+        private String address;
 
         public UserBuilder id(Integer id) {
             this.id = id;
@@ -209,10 +223,33 @@ public class User {
             return this;
         }
 
+        public UserBuilder address(String address) {
+            this.address = address;
+            return this;
+        }
+
         public User build() {
             return new User(this);
         }
 
 
+    }
+    public User(String json) throws JsonProcessingException {
+        User user = new ObjectMapper().readValue(json, User.class);
+        this.id = user.getId();
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.email = user.getEmail();
+        this.registerTime = user.getRegisterTime();
+        this.updateTime = user.getUpdateTime();
+        this.lastLoginTime = user.getLastLoginTime();
+        this.userType = user.getUserType();
+        this.age = user.getAge();
+        this.sex = user.getSex();
+        this.expirationDate = user.getExpirationDate();
+        this.headImg = user.getHeadImg();
+        this.phoneNum = user.getPhoneNum();
+        this.description = user.getDescription();
+        this.address = user.getAddress();
     }
 }

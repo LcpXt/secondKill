@@ -32,4 +32,8 @@ public interface GoodsMapper {
     SecondKillGoods selectSecondKillGoodsByGoodsId(Integer goodsId);
 
     void updateGoodsById(Goods goods);
+
+    SecondKillGoods getSecondKillGoodsById(int secondKillGoodsId);
+
+    int getSecondKillGoodsIdByGoodsId(Integer goodsId);
 }

@@ -21,11 +21,19 @@ public class MvcConfig implements WebMvcConfigurer {
     @Value("${my.project.user.head-img.resource-handler}")
     private String headImgResourceHandler;
 
+    @Value("${my.project.goods.goods-img.resource-location}")
+    private String goodsImgResourceLocation;
+
+    @Value("${my.project.goods.goods-img.resource-handler}")
+    private String goodsImgResourceHandler;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
         registry
                 .addResourceHandler(headImgResourceHandler + "**")
                 .addResourceLocations("file:///" + headImgResourceLocation);
+        registry.addResourceHandler(goodsImgResourceHandler + "**")
+                .addResourceLocations("file:///" + goodsImgResourceLocation);
     }
 }

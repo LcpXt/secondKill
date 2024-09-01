@@ -1,5 +1,7 @@
 package com.colin.secondkill.bean;
 
+import com.alibaba.fastjson2.JSONWriter;
+import com.alibaba.fastjson2.annotation.JSONField;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,6 +20,7 @@ public class Order {
     /**
      * 下单用户
      */
+    @JSONField(serializeFeatures = {JSONWriter.Feature.WriteNulls})
     private User user;
     /**
      * 商品id
@@ -34,6 +37,7 @@ public class Order {
     /**
      * 订单支付时间
      */
+    @JSONField(serializeFeatures = {JSONWriter.Feature.WriteNulls})
     private Timestamp payTime;
 
     private Order(OrderBuilder orderBuilder){

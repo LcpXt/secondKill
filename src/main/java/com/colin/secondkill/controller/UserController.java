@@ -3,9 +3,13 @@ package com.colin.secondkill.controller;
 import cn.hutool.crypto.digest.MD5;
 import com.alibaba.fastjson2.JSONObject;
 import com.colin.secondkill.annotation.LoginStatus;
+import com.colin.secondkill.bean.Goods;
+import com.colin.secondkill.bean.SecondKillGoods;
 import com.colin.secondkill.exception.NullFileException;
 import com.colin.secondkill.exception.ReadWriteFileException;
+import com.colin.secondkill.mapper.GoodsMapper;
 import com.colin.secondkill.mapper.UserMapper;
+import com.colin.secondkill.model.GoodsSecondKillGoodsDTO;
 import com.colin.secondkill.util.response.ResponseResult;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +31,7 @@ import javax.validation.Valid;
 import javax.xml.ws.Response;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -46,16 +51,10 @@ public class UserController implements InitializingBean {
     @Autowired
     private JedisPool jedisPool;
     private List<Integer> ageList;
+    @Autowired
+    private GoodsMapper goodsMapper;
 
-    /**
-     * Invoked by the containing {@code BeanFactory} after it has set all bean properties
-     * and satisfied {@link BeanFactoryAware}, {@code ApplicationContextAware} etc.
-     * <p>This method allows the bean instance to perform validation of its overall
-     * configuration and final initialization when all bean properties have been set.
-     *
-     * @throws Exception in the event of misconfiguration (such as failure to set an
-     *                   essential property) or if initialization fails for any other reason
-     */
+
     @Override
     public void afterPropertiesSet() throws Exception {
         this.ageList = new ArrayList<Integer>();
@@ -128,7 +127,6 @@ public class UserController implements InitializingBean {
      * sa-token
      * @param username
      * @param password
-     * @param session
      * @param model
      * @return
      */
@@ -136,9 +134,10 @@ public class UserController implements InitializingBean {
     public String doLogin(
             @RequestParam("username") String username,
             @RequestParam("password") String password,
-            HttpSession session,
             HttpServletResponse response,
-            Model model
+            Model model,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size
     ) {
         MD5 md5 = MD5.create();
         long ttl = System.currentTimeMillis() + (20 * 60 * 1000);
@@ -151,6 +150,24 @@ public class UserController implements InitializingBean {
         //如果一次接口或者视图的跳转没有用到Request域对象或者Model，能用重定向就用重定向
         //因为用户可能刷新浏览器
         //防止因为地址栏不变导致的表单重复提交
+
+        //把秒杀商品塞到主页
+        List<SecondKillGoods> secondKillGoodsList = goodsMapper.getAllSecondKillGoods();
+        List<GoodsSecondKillGoodsDTO> goodsSecondKillGoodsDTOList = new ArrayList<>();
+        for(int i = secondKillGoodsList.size() - 1; i >= 0; i--){
+            GoodsSecondKillGoodsDTO goodsSecondKillGoodsDTO = new GoodsSecondKillGoodsDTO();
+            SecondKillGoods secondKillGoods = secondKillGoodsList.get(i);
+            Integer goodsId = secondKillGoods.getGoodsId();
+            Goods goods = goodsMapper.getGoodsByGoodsId(goodsId);
+            goodsSecondKillGoodsDTO.setGoods(goods);
+            goodsSecondKillGoodsDTO.setSecondKillGoods(secondKillGoods);
+            goodsSecondKillGoodsDTOList.add(goodsSecondKillGoodsDTO);
+        }
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+        model.addAttribute("currentTime", currentTime);
+        model.addAttribute("goodsSecondKillGoodsDTOList", goodsSecondKillGoodsDTOList);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", (goodsSecondKillGoodsDTOList.size() + size - 1) / size);
         return "home";
     }
     @RequestMapping("/logout")

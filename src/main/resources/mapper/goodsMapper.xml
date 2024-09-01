@@ -40,4 +40,10 @@
     <select id="selectSecondKillGoodsByGoodsId" resultType="com.colin.secondkill.bean.SecondKillGoods">
         SELECT * FROM t_second_kill_goods WHERE goods_id = #{param1}
     </select>
+    <select id="getSecondKillGoodsById" resultType="com.colin.secondkill.bean.SecondKillGoods">
+        SELECT * FROM t_second_kill_goods WHERE id = #{param1}
+    </select>
+    <select id="getSecondKillGoodsIdByGoodsId" resultType="java.lang.Integer">
+        SELECT id FROM t_second_kill_goods WHERE goods_id = #{param}
+    </select>
 </mapper>

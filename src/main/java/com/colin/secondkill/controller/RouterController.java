@@ -39,6 +39,20 @@ public class RouterController {
         return "changePassword";
     }
 
+    @RequestMapping("/toAdminLogin")
+    public String toAdminLogin() {
+        return "admin/adminLogin";
+    }
 
+
+    @RequestMapping("/toHome")
+    public String toHome() {
+        return "home";
+    }
+
+    @RequestMapping("/toGoodsManagement")
+    public String toGoodsManagement() {
+        return "admin/adminHome";
+    }
 
 }

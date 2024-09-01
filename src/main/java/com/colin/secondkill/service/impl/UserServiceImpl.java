@@ -217,11 +217,6 @@ public class UserServiceImpl implements UserService {
                                                            currentTime,
                                                            inputStream);
             String suffixName = FileUtils.getSuffixName(originalFilename);
-//            FileOutputStream fileOutputStream = new FileOutputStream(headImgResourceLocationPrefix + username + "/" +finalFileName);
-            //hutool工具包
-//            IoUtil.copy(inputStream, fileOutputStream);
-//            inputStream.close();
-//            fileOutputStream.close();
             //2.用数据表保存文件的相关信息
             //获取文件本身大小
             File file1 = new File(headImgResourceLocationPrefix + username + "/" + finalFileName);

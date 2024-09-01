@@ -22,6 +22,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import java.io.UnsupportedEncodingException;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +56,16 @@ public class GoodsServiceImpl implements GoodsService , InitializingBean {
     public ResponseResult<Order> doSecondKill(int secondKillGoodsId, String longToken) throws UnsupportedEncodingException {
         String jsonUser = TokenUtil.getJSONUserByLongToken(longToken, jedisPool);
         User user = JSONObject.parseObject(jsonUser, User.class);
+        //判断秒杀商品是否在活动时间内
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+        SecondKillGoods secondKillGoods = goodsMapper.getSecondKillGoodsById(secondKillGoodsId);
+        if (currentTime.before(secondKillGoods.getStartTime()) || currentTime.after(secondKillGoods.getEndTime())){
+            return new ResponseResult<>(
+                    Status.ERROR,
+                    "不在活动时间内",
+                    null
+            );
+        }
         //判断是否限购
         Jedis resource = jedisPool.getResource();
         if (resource.get("secondKillGoodsId-" + secondKillGoodsId + "userId-" + user.getId()) != null){
@@ -65,7 +76,7 @@ public class GoodsServiceImpl implements GoodsService , InitializingBean {
             );
         }
         //内存标记，true表示库存已经没了
-        if (map.get("SecondKillGoods-" + secondKillGoodsId)){
+        if (map.get("secondKillGoods-" + secondKillGoodsId)){
             return new ResponseResult<>(
                     Status.INSUFFICIENT_INVENTORY,
                     "商品库存不足，秒杀失败",
@@ -160,13 +171,4 @@ public class GoodsServiceImpl implements GoodsService , InitializingBean {
         }
         resource.close();
     }
-
-//    public void decrRedisInventory(Integer secondKillGoodsId) {
-//        Jedis resource = jedisPool.getResource();
-//        long result = resource.decr("secondKillGoods-" + secondKillGoodsId);
-//        if (result <= 0){
-//            map.put("secondKillGoods-" + secondKillGoodsId, true);
-//        }
-//        resource.close();
-//    }
 }

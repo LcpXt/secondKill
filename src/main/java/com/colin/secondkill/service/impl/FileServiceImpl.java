@@ -63,15 +63,6 @@ public class FileServiceImpl implements FileService {
         Integer userId = TokenUtil.getIdFromShortToken(shortToken);
         String longTokenId = TokenUtil.getLongTokenIdFromLongToken(longToken);
 
-//        Jedis resource = jedisPool.getResource();
-//        String jsonUser = resource.get(longTokenId);
-//        User loginUser = JSONObject.parseObject(jsonUser, User.class);
-//        loginUser.setHeadImg(headImg.getMappingPath());
-//        String jsonUserTemp = JSONObject.toJSONString(loginUser);
-//        resource.set(longTokenId, jsonUserTemp);
-//        //2、改动user表中绑定的head_img
-//        userMapper.updateHeadImgById(userId, headImg.getMappingPath());
-
         userService.updateHeadImg(userId, headImg.getMappingPath(), longTokenId);
 
         responseResult.setStatus(Status.FILE_EXISTS);

@@ -4,8 +4,8 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.colin.secondkill.mapper.UserMapper">
     <insert id="insertUser">
-        INSERT INTO t_user(id, username, password, email, register_time, update_time, last_login_time, user_type, age, sex, expiration_date, head_img, phone_number) VALUES
-        (NULL, #{username}, #{password}, #{email}, #{registerTime}, #{updateTime}, #{lastLoginTime}, #{userType}, #{age}, #{sex}, #{expirationDate}, #{headImg}, #{phoneNumber})
+        INSERT INTO t_user(id, username, password, email, register_time, update_time, last_login_time, user_type, age, sex, expiration_date, head_img, phone_num, address) VALUES
+        (NULL, #{username}, #{password}, #{email}, #{registerTime}, #{updateTime}, #{lastLoginTime}, #{userType}, #{age}, #{sex}, #{expirationDate}, #{headImg}, NULL, NULL)
     </insert>
     <update id="updatePasswordByEmail">
         UPDATE t_user SET password = #{param2} WHERE email = #{param1}
@@ -18,7 +18,7 @@
     </update>
     <update id="updateUserById">
         UPDATE t_user
-        SET username = #{username}, age = #{age}, sex = #{sex}, description = #{description}, update_time = #{updateTime}
+        SET username = #{name}, price = #{price}, sex = #{sex}, description = #{description}, update_time = #{updateTime}, address = #{address}
         <if test="password != null">
             , password = #{password}
         </if>

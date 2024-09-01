@@ -240,6 +240,65 @@
                 </div>
             </div>
         </div>
+        <div class="wrapper">
+            <div class="col-lg-12 col-xl-8 col-md-12" >
+                <div class="card ">
+                    <div class="card-header">
+                        <h5 class="card-title">特价秒杀</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive border-top">
+                            <table class="table card-table table-striped table-vcenter">
+                                <thead>
+                                <tr>
+                                    <th>商品编号</th>
+                                    <th colspan="2">商品名称</th>
+                                    <th>商品价格</th>
+                                    <th>商品库存</th>
+                                    <th>开始时间</th>
+                                    <th>截止时间</th>
+                                    <th>购买</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="goods : ${goodsSecondKillGoodsDTOList}">
+                                    <td th:text="${goods.secondKillGoods.id}"></td>
+
+                                    <td><span class="avatar brround" th:style="'background-image: url(' + ${goods.goods.img} + ')'"></span></td>
+                                    <td th:text="${goods.goods.name}"></td>
+                                    <td th:text="${goods.goods.price}"></td>
+                                    <td th:text="${goods.secondKillGoods.inventory}"></td>
+                                    <td th:text="${#dates.format(goods.secondKillGoods.startTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                    <td th:text="${#dates.format(goods.secondKillGoods.endTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                    <td>
+                                        <span th:if="${goods.secondKillGoods.startTime > currentTime}" class="badge badge-warning">未开始</span>
+                                        <span th:if="${goods.secondKillGoods.inventory <= 0}" class="badge badge-warning">售罄</span>
+                                        <span th:if="${goods.secondKillGoods.endTime < currentTime}" class="badge badge-success">已结束</span>
+                                        <button th:if="${(goods.secondKillGoods.endTime > currentTime) && (goods.secondKillGoods.startTime < currentTime)}" id="secondKillBtn" class="icon" type="button" th:attr="onclick='startTimedTask(' + ${goods.secondKillGoods.id} + ')'">购买</button>
+                                    </td>
+
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="pagination">
+                                <ul class="pagination">
+                                    <li th:classappend="${currentPage > 0 ? 'page-item' : 'page-item disabled'}">
+                                        <a th:href="@{/admin/secondKillGoodsManagement(page=${currentPage - 1}, size=${size})}" class="page-link">&laquo;</a>
+                                    </li>
+                                    <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                                        th:classappend="${currentPage == i ? 'page-item active' : 'page-item'}">
+                                        <a th:href="@{/admin/secondKillGoodsManagement(page=${i}, size=${size})}" class="page-link" th:text="${i + 1}"></a>
+                                    </li>
+                                    <li th:classappend="${currentPage < totalPages - 1 ? 'page-item' : 'page-item disabled'}">
+                                        <a th:href="@{/admin/secondKillGoodsManagement(page=${currentPage + 1}, size=${size})}" class="page-link">&raquo;</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!--footer-->
@@ -257,8 +316,38 @@
 
 <!-- Back to top -->
 <a href="#top" id="back-to-top" style="display: inline;"><i class="fa fa-angle-up"></i></a>
-
-
+<!--秒杀商品的函数-->
+<script>
+    function doSecondKill(secondKillGoodsId){
+        axios({
+            method: 'POST',
+            url: '/goods/doSecondKill/' + secondKillGoodsId
+        }).then(function (response) {
+            if (response.data.status === 'SUCCESS') {
+                swal(response.data.message, '', 'success');
+            } else {
+                swal(response.data.message, '', 'error');
+            }
+        })
+    }
+    // 定时器，定时扫描数据库里是否已经添加了订单
+    function startTimedTask(secondKillGoodsId) {
+        doSecondKill(secondKillGoodsId); // 立即执行的方法
+        let pollingInterval = setInterval(function() {
+            axios({
+                method: 'POST',
+                url: '/order/getOrder/' + secondKillGoodsId
+            }).then(function (response) {
+                if (response.data.status === 'SUCCESS') {
+                    clearInterval(pollingInterval);
+                    swal(response.data.message, '', 'success');
+                } else {
+                    swal(response.data.message, '', 'warning');
+                }
+            })
+        }, 500); // 每0.5秒执行一次的方法
+    }
+</script>
 
 </body>
 </html>

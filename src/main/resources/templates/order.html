@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" dir="ltr" xmlns:th="http://www.thymeleaf.org" xmlns="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -66,7 +66,6 @@
     <script th:src="@{/assets/js/spark-md5.js}"></script>
     <script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
     <link th:href="@{/assets/css/bootstrap.css}"/>
-    <script th:src="@{https://unpkg.com/axios/dist/axios.min.js}"></script>
 
 </head>
 <body class="">
@@ -76,7 +75,7 @@
         <div class="app-header1 header py-1 d-flex">
             <div class="container-fluid">
                 <div class="d-flex">
-                    <a class="header-brand" th:href="@{/toHome}">
+                    <a class="header-brand" href="index-1.html">
                         <img th:src="@{/assets/images/brand/logo.png}" class="header-brand-img"
                              alt="adminor logo">
                     </a>
@@ -224,19 +223,19 @@
                         </div>
                         <div class="dropdown text-center selector">
                             <a href="#" class="nav-link leading-none" data-toggle="dropdown">
-<!--                                        <span id="head_img_1" class="avatar avatar-sm brround"-->
-<!--                                              th:style="'background-image: url(' + ${loginUser.headImg} + ')'"></span>-->
+                                        <span id="head_img_1" class="avatar avatar-sm brround"
+                                              th:style="'background-image: url(' + ${loginUser.headImg} + ')'"></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow ">
                                 <div class="text-center">
-<!--                                    <a href="#" class="dropdown-item text-center font-weight-sembold user"-->
-<!--                                       data-toggle="dropdown" th:text="${loginUser.username}"></a>-->
-<!--                                    <span class="text-center user-semi-title text-dark"-->
-<!--                                          th:text="${loginUser.email}"></span>-->
+                                    <a href="#" class="dropdown-item text-center font-weight-sembold user"
+                                       data-toggle="dropdown" th:text="${loginUser.username}"></a>
+                                    <span class="text-center user-semi-title text-dark"
+                                          th:text="${loginUser.email}"></span>
                                     <div class="dropdown-divider"></div>
                                 </div>
-<!--                                <a class="dropdown-item" th:href="@{'/user/getLoginUserInfo'}">-->
-<!--                                    <i class="dropdown-icon mdi mdi-account-outline"></i> 个人中心-->
+                                <a class="dropdown-item" th:href="@{'/user/getLoginUserInfo'}">
+                                    <i class="dropdown-icon mdi mdi-account-outline"></i> 个人中心
                                 </a>
                                 <a class="dropdown-item" href="#">
                                     <i class="dropdown-icon  mdi mdi-settings"></i> 预留选项
@@ -252,8 +251,8 @@
                                 <a class="dropdown-item" href="#">
                                     <i class="dropdown-icon mdi mdi-compass-outline"></i> 需要帮助?
                                 </a>
-<!--                                <a class="dropdown-item" th:href="@{/user/logout}">-->
-<!--                                    <i class="dropdown-icon mdi  mdi-logout-variant"></i> 登出-->
+                                <a class="dropdown-item" th:href="@{/user/logout}">
+                                    <i class="dropdown-icon mdi  mdi-logout-variant"></i> 登出
                                 </a>
                             </div>
                         </div>
@@ -269,88 +268,154 @@
                         <div class="dropdown user-pro-body">
                             <div>
                                 <!-- <img th:src="@{${session.loginUser.headImg}}" alt="user-img" class="img-circle">-->
-<!--                                <span class="avatar avatar-sm brround"-->
-<!--                                      th:style="'background-image: url(' + ${loginUser.headImg} + ')'"></span>-->
+                                <span class="avatar avatar-sm brround"
+                                      th:style="'background-image: url(' + ${loginUser.headImg} + ')'"></span>
                             </div>
-<!--                            <div class="mb-2"><a href="#" class="" data-toggle="" aria-haspopup="true"-->
-<!--                                                 aria-expanded="false"> <span class="font-weight-semibold"-->
-<!--                                                                              th:text="${loginUser.username}"></span>-->
-<!--                            </a>-->
-<!--                                <br><span class="text-gray" th:text="${loginUser.email}"></span>-->
-<!--                            </div>-->
+                            <div class="mb-2"><a href="#" class="" data-toggle="" aria-haspopup="true"
+                                                 aria-expanded="false"> <span class="font-weight-semibold"
+                                                                              th:text="${loginUser.username}"></span>
+                            </a>
+                                <br><span class="text-gray" th:text="${loginUser.email}"></span>
+                            </div>
                         </div>
                     </div>
 
                     <li class="">
-                        <a th:href="@{/toGoodsManagement}" class="wave-effect">
-                            <i class="fa fa-desktop mr-2"></i> 普通商品管理
+                        <a th:href="@{'/user/getLoginUserInfo'}" class="wave-effect">
+                            <i class="fa fa-desktop mr-2"></i> 个人信息
                         </a>
                     </li>
                     <li class="">
-                        <a th:href="@{/admin/secondKillGoodsManagement}" class="wave-effect">
-                            <i class="fa fa-snowflake-o mr-2"></i> 秒杀商品管理
+                        <a href="#Apps" class="wave-effect">
+                            <i class="fa fa-snowflake-o mr-2"></i> 个人空间
                         </a>
                     </li>
+                    <li>
+                        <a th:href="@{/order/myOrder}" class="wave-effect">
+                            <i class="fa fa-area-chart mr-2"></i> 订单列表
+                        </a>
+                    </li>
+                    <!--                    <li class="">-->
+                    <!--                        <a href="#Uielements" class="wave-effect">-->
+                    <!--                            <i class="mdi mdi-buffer mr-2"></i> 观看历史-->
+                    <!--                        </a>-->
+
+                    <!--                    </li>-->
+                    <li class="">
+                        <a href="#Uidesign" class="wave-effect">
+                            <i class="fa fa-tachometer mr-2"></i> 我的收藏
+                        </a>
+
+                    </li>
+                    <li>
+                        <a href="widgets.html" class="wave-effect">
+                            <i class="fa fa-cubes mr-2"></i> 购物车
+                        </a>
+                    </li>
+                    <!--                    <li class="">-->
+                    <!--                        <a href="#pages" class="wave-effect">-->
+                    <!--                            <i class="mdi mdi-file mr-2"></i> 成为创作者-->
+                    <!--                        </a>-->
+
+                    <!--                    </li>-->
+                    <!--                    <li class="">-->
+                    <!--                        <a href="#Forms" class="wave-effect">-->
+                    <!--                            <i class="mdi mdi-arrange-send-backward mr-2"></i> 视频投稿-->
+                    <!--                        </a>-->
+
+                    <!--                    </li>-->
+                    <!--                    <li class="">-->
+                    <!--                        <a href="#Submenu1" class="wave-effect">-->
+                    <!--                            <i class="fa fa-calendar mr-2"></i> 稿件管理-->
+                    <!--                        </a>-->
+
+                    <!--                    </li>-->
+                    <!--                    <li class="">-->
+                    <!--                        <a href="#Icons" class="wave-effect">-->
+                    <!--                            <i class="fa fa-bandcamp mr-2"></i> 创作中心-->
+                    <!--                        </a>-->
+                    <!--                    </li>-->
                 </ul>
             </nav>
-            <div class="col-lg-12 col-xl-8">
-                <div class="card">
+            <div class="col-lg-12 col-xl-8 col-md-12">
+                <div class="card ">
                     <div class="card-header">
-                        <h3 class="card-title">常规商品列表</h3>
+                        <h5 class="card-title">订单列表(订单有效期为30分钟，请及时支付)</h5>
                     </div>
-                    <div>
-                        <div class="table-responsive border-top">
-                            <table class="table card-table table-striped table-vcenter">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped card-table table-condensed mt-0 table-nowrap border">
                                 <thead>
                                 <tr>
-                                    <th>商品id</th>
-                                    <th colspan="2">商品名称</th>
-                                    <th>商品价格</th>
-                                    <th>商品库存</th>
-                                    <th>删除</th>
-                                    <th>编辑</th>
+                                    <th>订单编号</th>
+                                    <th>商品名</th>
+                                    <th>价格</th>
+                                    <th>下单时间</th>
+                                    <th>订单状态</th>
+                                    <th>去支付</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="goods : ${session.goodsList}">
-                                    <td th:text="${goods.id}"></td>
-                                    <input type="hidden" id="goodsId" th:value="${goods.id}">
-                                    <td><span class="avatar brround" th:style="'background-image: url(' + ${goods.img} + ')'"></span></td>
-                                    <td><label>
-                                        <input th:value="${goods.name}" th:id="'name-' + ${goods.id}">
-                                        <input type="hidden" th:value="${goods.name}" th:id="'originalGoodsName-' + ${goods.id}">
-                                    </label></td>
-                                    <td><label>
-                                        <input th:text="${goods.price}" th:id="'price-' + ${goods.id}">
-                                        <input type="hidden" th:value="${goods.price}" th:id="'originalGoodsPrice-' + ${goods.id}">
-                                    </label></td>
-                                    <td><label>
-                                        <input th:value="${goods.inventory}" th:id="'inventory-' + ${goods.id}">
-                                        <input type="hidden" th:value="${goods.inventory}" th:id="'originalGoodsInventory-' + ${goods.id}">
-                                    </label></td>
-                                    <td class="w-1"><button id="goodsDelete" class="icon" type="button" th:attr="onclick='deleteGoods(' + ${goods.id} + ')'">删除</button></td>
-                                    <td class="w-1"><button id="goodsEdit" class="icon" type="button" th:attr="onclick='updateGoods(' + ${goods.id} + ')'">修改</button></td>
+                                <tr th:each="orderGoodsDTO : ${orderDTOList}">
+                                    <td th:text="${orderGoodsDTO.order.id}"></td>
+                                    <td th:text="${orderGoodsDTO.goods.name}"></td>
+                                    <td th:text="${orderGoodsDTO.goods.price}"></td>
+                                    <td th:text="${#dates.format(orderGoodsDTO.order.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                    <td>
+                                        <span th:if="${orderGoodsDTO.order.status == 0}" class="badge badge-primary">未支付</span>
+                                        <span th:if="${orderGoodsDTO.order.status == 1}" class="badge badge-success">已支付</span>
+                                        <span th:if="${orderGoodsDTO.order.status == 2}" class="badge badge-warning">已取消</span>
+
+<!--                                        <input type="hidden" th:value="${orderGoodsDTO.order.user.id}" th:id="'orderUser-' + ${orderGoodsDTO.order.id}">-->
+<!--                                        <input type="hidden" th:value="${orderGoodsDTO.order.user.username}" th:id="'orderUser-' + ${orderGoodsDTO.order.id}">-->
+<!--                                        <input type="hidden" th:value="${orderGoodsDTO.order.user.updateTime}" th:id="'orderUser-' + ${orderGoodsDTO.order.id}">-->
+<!--                                        <input type="hidden" th:value="${orderGoodsDTO.order.user.id}" th:id="'orderUser-' + ${orderGoodsDTO.order.id}">-->
+<!--                                        <input type="hidden" th:value="${orderGoodsDTO.order.user.id}" th:id="'orderUser-' + ${orderGoodsDTO.order.id}">-->
+<!--                                        <input type="hidden" th:value="${orderGoodsDTO.order.user.id}" th:id="'orderUser-' + ${orderGoodsDTO.order.id}">-->
+<!--                                        <input type="hidden" th:value="${orderGoodsDTO.order.user.id}" th:id="'orderUser-' + ${orderGoodsDTO.order.id}">-->
+<!--                                        <input type="hidden" th:value="${orderGoodsDTO.order.user.id}" th:id="'orderUser-' + ${orderGoodsDTO.order.id}">-->
+<!--                                        <input type="hidden" th:value="${orderGoodsDTO.order.user}" th:id="'orderUser-' + ${orderGoodsDTO.order.id}">-->
+                                        <input type="hidden" th:value="${orderGoodsDTO.order.createTime}" th:id="'orderCreateTime-' + ${orderGoodsDTO.order.id}">
+                                        <input type="hidden" th:value="${orderGoodsDTO.order.goodsId}" th:id="'orderGoodsId-' + ${orderGoodsDTO.order.id}">
+                                        <input type="hidden" th:value="${jsonUser}" th:id="'orderUser-' + ${orderGoodsDTO.order.id}">
+                                        <input type="hidden" th:value="${orderGoodsDTO.order.payTime}" th:id="'orderPayTime-' + ${orderGoodsDTO.order.id}">
+                                        <input type="hidden" th:value="${orderGoodsDTO.order.status}" th:id="'orderStatus-' + ${orderGoodsDTO.order.id}">
+                                        <script src="">
+                                            let user = document.getElementById('orderUser-522184');
+                                            console.log('user:' + user);
+                                            let createTime = document.getElementById('orderCreateTime-522184');
+                                            console.log('createTime:' +createTime);
+                                        </script>
+                                    </td>
+                                    <td>
+                                        <option th:if="${orderGoodsDTO.order.status == 0}" th:attr="onclick='doPay(' + ${orderGoodsDTO.order.id} + ')'">去支付</option>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
                             <div class="pagination">
                                 <ul class="pagination">
-                                    <li th:classappend="${session.currentPageOfGoods > 0 ? 'page-item' : 'page-item disabled'}">
-                                        <a th:href="@{/order/myOrder(page=${session.currentPageOfGoods - 1}, size=${session.size})}" class="page-link">&laquo;</a>
+                                    <li th:classappend="${currentPage > 0 ? 'page-item' : 'page-item disabled'}">
+                                        <a th:href="@{/order/myOrder(page=${currentPage - 1}, size=${size})}" class="page-link">&laquo;</a>
                                     </li>
-                                    <li th:each="i : ${#numbers.sequence(0, session.totalPagesOfGoods - 1)}"
-                                        th:classappend="${session.currentPageOfGoods == i ? 'page-item active' : 'page-item'}">
-                                        <a th:href="@{/order/myOrder(page=${i}, size=${session.size})}" class="page-link" th:text="${i + 1}"></a>
+                                    <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                                        th:classappend="${currentPage == i ? 'page-item active' : 'page-item'}">
+                                        <a th:href="@{/order/myOrder(page=${i}, size=${size})}" class="page-link" th:text="${i + 1}"></a>
                                     </li>
-                                    <li th:classappend="${session.currentPageOfGoods < session.totalPagesOfGoods - 1 ? 'page-item' : 'page-item disabled'}">
-                                        <a th:href="@{/order/myOrder(page=${session.currentPageOfGoods + 1}, size=${session.size})}" class="page-link">&raquo;</a>
+                                    <li th:classappend="${currentPage < totalPages - 1 ? 'page-item' : 'page-item disabled'}">
+                                        <a th:href="@{/order/myOrder(page=${currentPage + 1}, size=${size})}" class="page-link">&raquo;</a>
                                     </li>
                                 </ul>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
+
+
+
+
         </div>
     </div>
 
@@ -370,57 +435,38 @@
 
 <!-- Back to top -->
 <a href="#top" id="back-to-top" style="display: inline;"><i class="fa fa-angle-up"></i></a>
-<!--删除普通商品的异步请求-->
-<script>
-     function deleteGoods(goodsId){
-        console.log("deleteGoods执行");
-        axios({
-            method: 'GET',
-            url: '/admin/deleteGoods/' + goodsId
-        }).then(function (response) {
-            if (response.data.status === 'SUCCESS') {
-                swal(response.data.message, '', 'success');
-            } else {
-                swal(response.data.message, '', 'error');
-            }
-            location.href = '/admin/getGoodsInfo';
-        })
-    }
-</script>
-<!--修改普通商品的异步请求-->
-<script>
-    function updateGoods(goodsId){
-        let goodsName = document.getElementById('goodsName-' + goodsId);
-        let goodsPrice = document.getElementById('price-' + goodsId);
-        let goodsInventory = document.getElementById('inventory-' + goodsId);
-        let originalGoodsName = document.getElementById('originalGoodsName-' + goodsId);
-        let originalGoodsPrice = document.getElementById('originalGoodsPrice-' + goodsId);
-        let originalGoodsInventory = document.getElementById('originalGoodsInventory-' + goodsId);
 
-        if(goodsName == originalGoodsName && goodsPrice == originalGoodsPrice && goodsInventory == originalGoodsInventory){
-            swal('当前无修改', '', 'warning');
-            return;
+<script>
+function doPay(orderId){
+    let orderUser = document.getElementById('orderUser-' + orderId);
+    let orderGoodsId = document.getElementById('orderGoodsId-' + orderId);
+    let orderStatus = document.getElementById('orderStatus-' + orderId);
+    let orderPayTime = document.getElementById('orderPayTime-' + orderId);
+    let orderCreateTime = document.getElementById('orderCreateTime-' + orderId);
+    let order = {
+        id: orderId,
+        user: orderUser.value,
+        goodsId: orderGoodsId.value,
+        status: orderStatus.value,
+        orderCreateTime: orderCreateTime.value,
+        orderPayTIme: orderPayTime.value
+    };
+    axios({
+        method: 'POST',
+        url: '/order/doPay',
+        data: order
+    }).then(function (response) {
+        if (response.data.status === 'SUCCESS') {
+            swal(response.data.message, '', 'success');
+        } else {
+            swal(response.data.message, '', 'error');
         }
-        let goods = {
-            id: goodsId,
-            name: goodsName,
-            price: goodsPrice,
-            inventory: goodsInventory
-        };
-        axios({
-            method: 'POST',
-            url: '/admin/updateGoodsInfo',
-            data: goods
-        }).then(function (response) {
-            if (response.data.status === 'SUCCESS') {
-                swal(response.data.message, '', 'success');
-            } else {
-                swal(response.data.message, '', 'error');
-            }
-            location.href = '/admin/getGoodsInfo';
-        })
-    }
+        location.href = '/order/myOrder';
+    })
+}
 </script>
+
+
 </body>
 </html>
 

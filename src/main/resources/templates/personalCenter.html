@@ -75,7 +75,7 @@
         <div class="app-header1 header py-1 d-flex">
             <div class="container-fluid">
                 <div class="d-flex">
-                    <a class="header-brand" href="index-1.html">
+                    <a class="header-brand" th:href="@{/toHome}">
                         <img th:src="@{/assets/images/brand/logo.png}" class="header-brand-img"
                              alt="adminor logo">
                     </a>
@@ -234,22 +234,22 @@
                                           th:text="${loginUser.email}"></span>
                                     <div class="dropdown-divider"></div>
                                 </div>
-                                <a class="dropdown-item" href="#">
-                                    <i class="dropdown-icon mdi mdi-account-outline"></i> Profile
+                                <a class="dropdown-item" th:href="@{'/user/getLoginUserInfo'}">
+                                    <i class="dropdown-icon mdi mdi-account-outline"></i> 个人中心
                                 </a>
                                 <a class="dropdown-item" href="#">
-                                    <i class="dropdown-icon  mdi mdi-settings"></i> Settings
+                                    <i class="dropdown-icon  mdi mdi-settings"></i> 预留选项
                                 </a>
                                 <a class="dropdown-item" href="#">
                                     <span class="float-right"><span class="badge badge-primary">6</span></span>
-                                    <i class="dropdown-icon mdi  mdi-message-outline"></i> Inbox
+                                    <i class="dropdown-icon mdi  mdi-message-outline"></i> 预留选项
                                 </a>
                                 <a class="dropdown-item" href="#">
-                                    <i class="dropdown-icon mdi mdi-comment-check-outline"></i> Message
+                                    <i class="dropdown-icon mdi mdi-comment-check-outline"></i> 预留选项
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#">
-                                    <i class="dropdown-icon mdi mdi-compass-outline"></i> Need help?
+                                    <i class="dropdown-icon mdi mdi-compass-outline"></i> 需要帮助?
                                 </a>
                                 <a class="dropdown-item" th:href="@{/user/logout}">
                                     <i class="dropdown-icon mdi  mdi-logout-variant"></i> 登出
@@ -291,15 +291,9 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#pageSubmenu" class="wave-effect">
-                            <i class="fa fa-area-chart mr-2"></i> 成为会员
+                        <a th:href="@{/order/myOrder}" class="wave-effect">
+                            <i class="fa fa-area-chart mr-2"></i> 订单列表
                         </a>
-                    </li>
-                    <li class="">
-                        <a href="#Uielements" class="wave-effect">
-                            <i class="mdi mdi-buffer mr-2"></i> 观看历史
-                        </a>
-
                     </li>
                     <li class="">
                         <a href="#Uidesign" class="wave-effect">
@@ -309,30 +303,7 @@
                     </li>
                     <li>
                         <a href="widgets.html" class="wave-effect">
-                            <i class="fa fa-cubes mr-2"></i> 积分管理
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="#pages" class="wave-effect">
-                            <i class="mdi mdi-file mr-2"></i> 成为创作者
-                        </a>
-
-                    </li>
-                    <li class="">
-                        <a href="#Forms" class="wave-effect">
-                            <i class="mdi mdi-arrange-send-backward mr-2"></i> 视频投稿
-                        </a>
-
-                    </li>
-                    <li class="">
-                        <a href="#Submenu1" class="wave-effect">
-                            <i class="fa fa-calendar mr-2"></i> 稿件管理
-                        </a>
-
-                    </li>
-                    <li class="">
-                        <a href="#Icons" class="wave-effect">
-                            <i class="fa fa-bandcamp mr-2"></i> 创作中心
+                            <i class="fa fa-cubes mr-2"></i> 购物车
                         </a>
                     </li>
                 </ul>
@@ -412,6 +383,13 @@
                                     <input type="hidden" th:value="${loginUser.description}"
                                            id="descriptionOriginal">
                                 </div>
+                                <div class="form-group">
+                                    <label class="form-label">地址</label>
+                                    <textarea class="form-control" rows="2" th:text="${loginUser.address}"
+                                              id="address"></textarea>
+                                    <input type="hidden" th:value="${loginUser.address}"
+                                           id="addressOriginal">
+                                </div>
 
                                 <div class="form-footer">
                                     <button class="btn btn-secondary btn-block" id="updateBtn">修改</button>
@@ -441,7 +419,7 @@
                                         <div class="media-body ml-5">
                                             <h6 class="mediafont text-dark mb-0">联系电话</h6><a class="d-block"
                                                                                                  href="#"
-                                                                                                 th:text="${loginUser.phoneNumber}"></a>
+                                                                                                 th:text="${loginUser.phoneNum}"></a>
                                         </div>
                                         <!-- media-body -->
                                     </div>
@@ -499,10 +477,10 @@
                                                         aria-hidden="true">&times;</span></button>
                                             </div>
                                             <div id="modal_body_1" class="modal-body">
-                                                <button th:if="${loginUser.phoneNumber != null}" type="button"
+                                                <button th:if="${loginUser.phoneNum != null}" type="button"
                                                         class="btn btn-warning">手机验证
                                                 </button>
-                                                <button th:unless="${loginUser.phoneNumber != null}"
+                                                <button th:unless="${loginUser.phoneNum != null}"
                                                         type="button" class="btn btn-default">绑定手机
                                                 </button>
                                                 <button th:if="${loginUser.email != null}" type="button"
@@ -613,6 +591,8 @@
                             let descriptionOriginal = document.getElementById('descriptionOriginal');
                             let password = document.getElementById('password');
                             let passwordChecked = document.getElementById('passwordChecked');
+                            let address = document.getElementById('address');
+                            let addressOriginal = document.getElementById('addressOriginal');
 
                             let sex;
                             let age;
@@ -630,7 +610,7 @@
                                     }
                                 }
 
-                                if (username.value == usernameOriginal.value && age == ageOriginal.value && sex == sexOriginal.value && description.value == descriptionOriginal.value && password.value == '') {
+                                if (username.value == usernameOriginal.value && age == ageOriginal.value && sex == sexOriginal.value && description.value == descriptionOriginal.value && password.value == '' && address.value == addressOriginal.value) {
                                     swal('当前无修改', '', 'warning');
                                     return;
                                 }
@@ -651,7 +631,8 @@
                                     password: finalPassword,
                                     age: age,
                                     sex: sex,
-                                    description: description.value
+                                    description: description.value,
+                                    address: address.value
                                 };
 
                                 axios({

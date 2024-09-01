@@ -140,7 +140,7 @@
                                 </div>
                                 <div class="input-icon form-group">
                                     年龄
-                                    <select name="user[day]" class="form-control custom-select">
+                                    <select name="age" class="form-control custom-select">
                                         <option value="">Day</option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -327,7 +327,8 @@
     let passwordChecked = false;
     let passwordElement = document.getElementById('password');
     passwordElement.onblur = function () {
-        let passwordPattern = /^.*(?=.{6,})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).*$/;
+        // let passwordPattern = /^.*(?=.{6,})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).*$/;
+        let passwordPattern = /^[a-zA-Z0-9]{3,12}$/;
         if (!passwordPattern.test(passwordElement.value)) {
             swal("密码不符合格式要求", "", "error");
             // 防止用户第一次输入密码时可用 但是后续又改动为一个不可用的密码 必须将校验结果还原为false
@@ -358,6 +359,10 @@
             console.log("加密后密码："+password.value);
             return true;
         }
+        console.log('usernameChecked:' + usernameChecked);
+        console.log('codeChecked:' + codeChecked);
+        console.log('passwordChecked:' + passwordChecked);
+        console.log('checkBoxElement.checked:' + checkBoxElement.checked);
         // 校验不通过时 将所有变量初始为false状态
         // 看看谁是false 这个sweet alert 就来一个具体的提示 让用户去更改具体的注册表单内容
         swal('校验不通过', '', 'error');
@@ -367,104 +372,6 @@
     }
 
 </script>
-<!--<script>-->
 
-<!--    // 现在有一个很主流的发送异步请求的js的工具包 jquery  ->   axios-->
-<!--    let usernameChecked = false;-->
-<!--    let codeChecked = false;-->
-<!--    let usernameInput = document.getElementById('username');-->
-<!--    usernameInput.onblur = function () {-->
-<!--        -->
-<!--        let usernamePattern = /^[a-zA-Z0-9]{3,12}$/;-->
-<!--        if (usernamePattern.test(usernameInput.value)) {-->
-<!--            axios({-->
-<!--                method: 'GET',-->
-<!--                url: '/user/checkUsername/' + usernameInput.value-->
-<!--            }).then(function (response) {-->
-<!--                if (response.data.status === 'SUCCESS') {-->
-<!--                    swal(response.data.message, '', 'success')-->
-<!--                    // 如果不存在 将校验结果设置为true-->
-<!--                    usernameChecked = true;-->
-<!--                } else {-->
-<!--                    swal(response.data.message, '', 'error');-->
-<!--                    usernameChecked = false;-->
-<!--                }-->
-<!--            });-->
-<!--        } else {-->
-<!--            swal('用户名格式不符合要求', '', 'error');-->
-<!--            usernameChecked = false;-->
-<!--        }-->
-<!--    }-->
-
-<!--    let codeElement = document.getElementById('code');-->
-<!--    codeElement.onblur = function (){-->
-<!--        axios({-->
-<!--            method: "GET",-->
-<!--            url: '/user/checkCode/' + codeElement.value + '/' + emailInput.value-->
-<!--        }).then(function (response){-->
-<!--            if (response.data.status === 'SUCCESS'){-->
-<!--                codeChecked = true;-->
-<!--            }-->
-<!--        })-->
-<!--    }-->
-
-<!--    let sendButton = document.getElementById('send-button');-->
-<!--    let emailInput = document.getElementById('email');-->
-<!--    sendButton.onclick = function () {-->
-<!--        -->
-<!--        let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;-->
-<!--        let checkedResult = emailPattern.test(emailInput.value);-->
-
-
-<!--        if (emailPattern.test(emailInput.value)) {-->
-<!--            axios({-->
-<!--                method: 'GET',-->
-<!--                url: '/user/sendEmail/' + emailInput.value + '/0'-->
-<!--            }).then(function (response) {-->
-<!--                response.data.status === 'SUCCESS' ? swal(response.data.message, '', 'success') : swal(response.data.message, '', 'error');-->
-<!--            });-->
-<!--        } else {-->
-<!--            swal('邮箱格式不符合规则', '', 'error');-->
-<!--        }-->
-<!--    }-->
-
-<!--    // 密码是否符合正则校验-->
-<!--    let passwordChecked = false;-->
-<!--    let passwordElement = document.getElementById('password');-->
-<!--    passwordElement.onblur = function () {-->
-<!--        let passwordPattern = /^.*(?=.{6,})(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*? ]).*$/;-->
-<!--        if (!passwordPattern.test(passwordElement.value)) {-->
-<!--            swal("密码不符合格式要求", "", "error");-->
-<!--            // 防止用户第一次输入密码时可用 但是后续又改动为一个不可用的密码 必须将校验结果还原为false-->
-<!--            passwordChecked = false;-->
-<!--        } else {-->
-<!--            // 如果用户密码符合正则 那么将校验结果置为true 用于后续的表单提交前验证-->
-<!--            passwordChecked = true;-->
-<!--        }-->
-<!--        console.log(passwordPattern.test(passwordPattern.value));-->
-<!--    }-->
-
-<!--    let registerForm = document.getElementById('register-form');-->
-<!--    registerForm.onsubmit = function (){-->
-
-<!--        let password = document.getElementById('password').value;-->
-<!--        let checkPassword = document.getElementById('checkPassword').value;-->
-<!--        let checkBoxElement = document.getElementById('agree');-->
-
-<!--        if (password === checkPassword && usernameChecked && codeChecked && passwordChecked && checkBoxElement.checked) {-->
-<!--            document.getElementById('password').value = b64_md5(password);-->
-<!--            document.getElementById('checkPassword').value = b64_md5(password);-->
-<!--            return true;-->
-<!--        }-->
-<!--        console.log("密码一致性" + password === checkPassword)-->
-<!--        console.log("用户名检验" + usernameChecked)-->
-<!--        console.log("验证码检验" + codeChecked)-->
-<!--        console.log("勾选框检验" + document.getElementById('agree').checked)-->
-
-<!--        swal('校验不通过', '', 'error');-->
-<!--        return false;-->
-<!--    }-->
-
-<!--</script>-->
 </body>
 </html>

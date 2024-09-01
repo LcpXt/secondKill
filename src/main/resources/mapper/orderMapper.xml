@@ -11,4 +11,15 @@
     <insert id="insertSecondKillOrder">
         INSERT INTO t_second_kill_order VALUES (NULL, #{user.id}, #{id}, #{goodsId})
     </insert>
+    <update id="updateOrder">
+        UPDATE t_order
+        SET pay_time = #{payTime}, status = #{status}
+        WHERE id = #{id}
+    </update>
+    <select id="getAllOrdersByUserId" resultType="com.colin.secondkill.bean.Order">
+        SELECT * FROM t_order WHERE user_id = #{param1}
+    </select>
+    <select id="selectOrderByOrderId" resultType="com.colin.secondkill.bean.Order">
+        SELECT * FROM t_order WHERE id = #{param1}
+    </select>
 </mapper>

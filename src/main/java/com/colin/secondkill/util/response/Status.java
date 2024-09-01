@@ -35,6 +35,22 @@ public enum Status {
     /**
      * 库存不足
      */
-    INSUFFICIENT_INVENTORY
+    INSUFFICIENT_INVENTORY,
+    /**
+     * 下单中
+     */
+    ORDERING_IN_PROGRESS,
+    /**
+     * 限购
+     */
+    PURCHASE_LIMIT,
+    /**
+     * 下单失败
+     */
+    ORDER_FAILED,
+    /**
+     * 支付失败
+     */
+    PAYMENT_FAILED
 
 }
